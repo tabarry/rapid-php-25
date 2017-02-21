@@ -67,15 +67,23 @@ for ($i = 0; $i <= sizeof($_POST['frmShow']) - 1; $i++) {
                     $suSubstr = "echo suSubstr(suUnstrip(\$row['" . $_POST['frmShow'][$i] . "']));";
                 }
             } else {
+
                 $tag = "p";
                 if ($_POST['frmType'][$i] == 'Integer') {
                     $suSubstr = "echo number_format(suUnstrip(\$row['" . $_POST['frmShow'][$i] . "']));";
-                } elseif ($_POST['frmType'][$i] == 'Double' || $_POST['frmType'][$i] == 'Float') {
-                    $suSubstr = "echo number_format(suUnstrip(\$row['" . $_POST['frmShow'][$i] . "']),2);";
+                } elseif ($_POST['frmType'][$i] == 'Double' || $_POST['frmType'][$i] == 'Float' || $_POST['frmType'][$i] == 'Currency') {
+                    //Add currency symbol
+                    if ($_POST['frmType'][$i] == 'Currency') {
+                        $currency = " '<sup>'.\$getSettings['site_currency'].'</sup> ' ";
+                    } else {
+                        $currency = "";
+                    }
+                    $suSubstr = "echo ".$currency." . number_format(suUnstrip(\$row['" . $_POST['frmShow'][$i] . "']),2);";
                 } else {
                     $suSubstr = "echo suSubstr(suUnstrip(\$row['" . $_POST['frmShow'][$i] . "']));";
                 }
             }
+
             $fieldsToShow .= "<label>" . makeFieldLabel($_POST['frmShow'][$i]) . "</label>\n
                               <{$tag}>
                               <?php

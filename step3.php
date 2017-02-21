@@ -119,6 +119,7 @@ set_time_limit(0);
                                                     <option <?php makeFieldType($row[8], $row[0], $row[1], "Integer"); ?>>Integer</option>
                                                     <option <?php makeFieldType($row[8], $row[0], $row[1], "Float"); ?>>Float</option>
                                                     <option <?php makeFieldType($row[8], $row[0], $row[1], "Double"); ?>>Double</option>
+                                                    <option <?php makeFieldType($row[8], $row[0], $row[1], "Currency"); ?>>Currency</option>
                                                     <option <?php makeFieldType($row[8], $row[0], $row[1], "Date"); ?>>Date</option>
                                                     <option <?php makeFieldType($row[8], $row[0], $row[1], "Enum"); ?>>Enum</option>
                                                     <option <?php makeFieldType($row[8], $row[0], $row[1], "Dropdown from DB"); ?>>Dropdown from DB</option>

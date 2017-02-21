@@ -37,11 +37,19 @@ for ($i = 0; $i <= sizeof($_POST['frmShow']) - 1; $i++) {
                                                 ?>
                                             <div class=\"imgThumb\" style=\"background-image:url(<?php echo \$defaultImage; ?>);\"></div></td>\n";
         } else {
-            $fieldsToShow .= "<th style=\"width:" . $colSize . "%\">" . makeFieldLabel($_POST['frmShow'][$i]) . "</th>\n";
+            if ($_POST['frmType'][$i] == 'Currency') {
+                $fieldsToShow .= "<th class=\"right\" style=\"width:" . $colSize . "%\">" . makeFieldLabel($_POST['frmShow'][$i]) . " <sup><?php echo \$getSettings['site_currency'];?></sup></th>\n";
+            } elseif ($_POST['frmType'][$i] == 'Float' || $_POST['frmType'][$i] == 'Integer' || $_POST['frmType'][$i] == 'Double') {
+                $fieldsToShow .= "<th class=\"right\" style=\"width:" . $colSize . "%\">" . makeFieldLabel($_POST['frmShow'][$i]) . "</th>\n";
+            } else {
+                $fieldsToShow .= "<th style=\"width:" . $colSize . "%\">" . makeFieldLabel($_POST['frmShow'][$i]) . "</th>\n";
+            }
+
             if ($_POST['frmType'][$i] == 'Integer') {
-                $colData .= "<td><?php echo number_format(suUnstrip(\$row['" . $_POST['frmShow'][$i] . "']));?></td>\n";
-            } elseif ($_POST['frmType'][$i] == 'Double'||$_POST['frmType'][$i] == 'Float') {
-                $colData .= "<td><?php echo number_format(suUnstrip(\$row['" . $_POST['frmShow'][$i] . "']),2);?></td>\n";
+                $colData .= "<td class=\"right\"><?php echo number_format(suUnstrip(\$row['" . $_POST['frmShow'][$i] . "']));?></td>\n";
+            } elseif ($_POST['frmType'][$i] == 'Double' || $_POST['frmType'][$i] == 'Float' || $_POST['frmType'][$i] == 'Currency') {
+
+                $colData .= "<td class=\"right\"><?php echo number_format(suUnstrip(\$row['" . $_POST['frmShow'][$i] . "']),2);?></td>\n";
             } else {
                 $colData .= "<td><?php echo suUnstrip(\$row['" . $_POST['frmShow'][$i] . "']);?></td>\n";
             }
