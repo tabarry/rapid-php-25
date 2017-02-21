@@ -65,14 +65,14 @@ if ($_POST['frmDetailsSourceText'] != 'Checkbox Text..') {
 
 
 <?php
-while (\$row = suFetch(\$result)) {
+foreach (\$result['result'] as \$row) {
 \$chkUid = \$row['" . $f1 . "'];
     ?>
 <a id=\"chk<?php echo \$chkUid; ?>\" href=\"javascript:;\" class=\"underline\" onclick=\"loadCheckbox('<?php echo \$chkUid; ?>', '<?php echo addslashes(suUnstrip(\$row['" . $f2 . "'])); ?>', '" . $f2 . "')\" onmouseover=\"toggleCheckboxClass('over', '<?php echo \$chkUid; ?>');\" onmouseout=\"toggleCheckboxClass('out', '<?php echo \$chkUid; ?>');\"><i id=\"fa<?php echo \$chkUid; ?>\" class=\"fa fa-square-o\"></i> <?php echo suUnstrip(\$row['" . $f2 . "']); ?>.</a>
         
 
     <?php
-}suFree(\$result);
+}
 ?>
 
 </div>
@@ -95,13 +95,13 @@ while (\$row = suFetch(\$result)) {
 //Get entered data
 \$sql = \"SELECT " . $f1a . " FROM " . $t1a . " WHERE " . $prefix2 . "__dbState ='Live' AND " . $f2a . "='\" . \$id . \"'\";
 \$result = suQuery(\$sql);
-while (\$row = suFetch(\$result)) {
+foreach (\$result['result'] as \$row) {
     array_push(\$chkArr, \$row['" . $f1a . "']);
-}suFree(\$result);
+}
 
 \$sql = \"SELECT " . $f1 . ", " . $f2 . " FROM " . $t1 . " WHERE " . $prefix1 . "__dbState ='Live' ORDER BY " . $f2 . "\";
 \$result = suQuery(\$sql);
-                                            while (\$row = suFetch(\$result)) {
+                                            foreach (\$result['result'] as \$row) {
                                                 \$chkUid = \$row['".$f1."'];
                                                 if (in_array(\$row['".$f1."'], \$chkArr)) {
                                                     ?>
@@ -109,7 +109,7 @@ while (\$row = suFetch(\$result)) {
                                                     <table id=\"chkTbl<?php echo \$chkUid; ?>\" class=\"checkTable\"><tbody><tr><td class=\"checkTd\"><?php echo suUnstrip(\$row['".$f2."']); ?></td><td onclick=\"removeCheckbox('<?php echo \$row['".$f1."']; ?>')\" class=\"checkTdCancel\"><a onclick=\"removeCheckbox('<?php echo \$row['".$f1."']; ?>')\" href=\"javascript:;\">x</a></td></tr><input type=\"hidden\" name=\"".$f2."[]\" value=\"<?php echo \$row['".$f1."']; ?>\"></tbody></table>
                                            <?php
                                                 }
-                                            }suFree($result);
+                                            }
                                             ?>    
 </div>                                
 <p class=\"clearfix\">&nbsp;</p>                                
@@ -121,7 +121,7 @@ while (\$row = suFetch(\$result)) {
 ?>
 <div class=\"widget tasks-widget col-xs-12 col-sm-12 col-md-12 col-lg-12\" style=\"padding:0px;margin:0px;\">
     <?php
-while (\$row = suFetch(\$result)) {
+foreach (\$result['result'] as \$row) {
 \$chkUid = \$row['".$f1."'];
 if (in_array(\$row['".$f1."'], \$chkArr)) {
                                                         \$display = \"style='display:none'\";
@@ -134,7 +134,7 @@ if (in_array(\$row['".$f1."'], \$chkArr)) {
         
 
     <?php
-}suFree(\$result);
+}
 ?>
 
 </div>

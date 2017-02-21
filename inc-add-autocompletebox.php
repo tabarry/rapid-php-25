@@ -27,9 +27,9 @@ if ($doUpdate == TRUE) {
         //Get the field value
         \$sqlVal = \"SELECT " . $fieldText . "  FROM " . $table . " WHERE " . $fieldPrefix1 . "__dbState='Live' AND  " . $fieldPrefix1 . "__ID = '\" . \$row['" . $_POST['frmField'][$i] . "'] . \"' \";
         \$resultVal = suQuery(\$sqlVal);
-        \$rowVal = suFetch(\$resultVal);
+        \$rowVal = \$resultVal['result'][0];
         \$row['" . $_POST['frmField'][$i] . "'] = \$rowVal['" . $fieldText . "'];
-        suFree(\$resultVal);";
+        ";
 } else {
     $autoCompleteFrameBuster .= ' && ($_GET["do"] != "autocomplete' . $autoCompleteCount . '") ';
     $updateFieldValue = "";
@@ -83,8 +83,8 @@ if (\$_GET['do'] == 'autocomplete" . $autoCompleteCount . "') {
     \$result = suQuery(\$sql);
 
     \$data = array();
-    if (\$result && suNumRows(\$result)) {
-        while (\$row = suFetch(\$result, MYSQL_ASSOC)) {
+    if (\$result && \$result['num_rows']) {
+        foreach (\$result['result'] as \$row) {
             \$data[] = array(
                 'label' => \$row['f2'],
                 'value' => \$row['f2']
@@ -95,5 +95,5 @@ if (\$_GET['do'] == 'autocomplete" . $autoCompleteCount . "') {
     echo json_encode(\$data);
     flush();
 }
-suFree(\$result);";
+";
 ?>

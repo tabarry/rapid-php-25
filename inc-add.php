@@ -75,7 +75,7 @@ if ($multipart == TRUE) {
 } else {
     $multipart = '';
 }
-$pageTitle = 'Add ' . ucwords(str_replace('-', ' ', substr(trim($_POST['frmFormsetvalue']), 0, -2)));
+$pageTitle = 'Add ' . ucwords(str_replace('-', ' ', substr(trim($_POST['frmFormsetvalue']), 0, -1)));
 
 $pageTitle = "\$pageName='" . $pageTitle . "';\$pageTitle='" . $pageTitle . "';";
 $addCodeStart = '

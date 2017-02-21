@@ -78,7 +78,7 @@ if ($multipart == TRUE) {
     $multipart = '';
 }
 //For update
-$pageTitle = ucwords(str_replace('-', ' ', substr(trim($_POST['frmFormsetvalue']), 0, -2)));
+$pageTitle = ucwords(str_replace('-', ' ', substr(trim($_POST['frmFormsetvalue']), 0, -1)));
 
 
 $pageTitle = "
