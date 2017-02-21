@@ -58,7 +58,21 @@ function makeFieldType($comments, $fld_name, $fld_type, $ddValue) {
     if (stristr($fld_name, "__date")) {
         $sel = "Date";
     }
-
+    if (stristr($fld_name, "_amount")) {
+        $sel = "Currency";
+    }
+    if (stristr($fld_name, "_cost")) {
+        $sel = "Currency";
+    }
+    if (stristr($fld_name, "_price")) {
+        $sel = "Currency";
+    }
+    if (stristr($fld_name, "_total")) {
+        $sel = "Currency";
+    }
+    if (stristr($fld_name, "_rate")) {
+        $sel = "Currency";
+    }
     if ($sel == $ddValue) {
         echo "selected=\"selected\"";
     } else {
@@ -71,7 +85,7 @@ function explodeExtract($str, $toExplode, $excludeArray) {
     $str = explode($toExplode, $str);
     for ($i = 0; $i <= sizeof($str) - 1; $i++) {
         if ($i != $excludeArray) {
-            $pageset.=$str[$i] . $toExplode;
+            $pageset .= $str[$i] . $toExplode;
         }
     }
     $pageset = substr($pageset, 0, -1);
@@ -91,7 +105,7 @@ function buildWww($path, $selected = "") {
                 } else {
                     $sel = "";
                 }
-                $opt.= "<option $sel>$entry</option>\n";
+                $opt .= "<option $sel>$entry</option>\n";
             }
         }
 
@@ -116,7 +130,7 @@ function tableDd($table, $select) {
                 $sel = "0";
             }
 
-            $opt.="<option $sel>" . $row[0] . "." . $row2[0] . "</option>";
+            $opt .= "<option $sel>" . $row[0] . "." . $row2[0] . "</option>";
         }mysqli_free_result($rs2);
     }mysqli_free_result($rs);
     return $opt;
@@ -178,7 +192,7 @@ function recurse_copy($src, $dst, $directory, $db, $db_user, $db_password) {
             } else {
                 if ($file == 'config.php') {
                     $apiKey = substr('x' . uniqid() . uniqid() . uniqid(), 0, 32);
-                    $apiKey = str_replace('a','_',$apiKey);
+                    $apiKey = str_replace('a', '_', $apiKey);
                     $content = file_get_contents($src . '/' . $file);
                     $content = str_replace("#DB_NAME#", $db, $content);
                     $content = str_replace("#DB_USER#", $db_user, $content);

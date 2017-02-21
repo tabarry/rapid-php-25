@@ -98,30 +98,9 @@ $pageTitle = 'Modules';
                                     <?php
                                     $dir = './';
                                     $dir = scandir($dir);
-                                    $exclude = array(
-                                        '.',
-                                        '..',
-                                        'index.html',
-                                        'index.php',
-                                        'login.php',
-                                        'reload.php',
-                                        'settings.php',
-                                        'template.php',
-                                        'logout.php',
-                                        'message.php',
-                                        'lost-password.php',
-                                        'notes.php',
-                                        'themes.php',
-                                        'modules.php',
-                                        'css',
-                                        'scss',
-                                        'fonts',
-                                        'img',
-                                        'js',
-                                        'less'
-                                    );
+                                    //$sidebarExclude comes from config.php
                                     foreach ($dir as $file) {
-                                        if ((!in_array($file, $exclude)) && ($file[0] != '.')) {
+                                        if ((!in_array($file, $sidebarExclude)) && ($file[0] != '.')) {
 
                                             if ((!stristr($file, '-add')) && (!stristr($file, '-remote')) && (!stristr($file, '-update')) && (!stristr($file, 'inc-')) && (!stristr($file, '-cards'))) {
 

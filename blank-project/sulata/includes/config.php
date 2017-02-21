@@ -72,3 +72,26 @@ $restoreAccess = TRUE;
 $addAccess = TRUE;
 $downloadAccessCSV = TRUE;
 $downloadAccessPDF = TRUE;
+//Exclude pages from the sidebar and modules
+$sidebarExclude = array(
+    '.',
+    '..',
+    'index.html',
+    'index.php',
+    'login.php',
+    'reload.php',
+    'settings.php',
+    'template.php',
+    'logout.php',
+    'message.php',
+    'lost-password.php',
+    'notes.php',
+    'themes.php',
+    'modules.php',
+    'css',
+    'scss',
+    'fonts',
+    'img',
+    'js',
+    'less'
+);

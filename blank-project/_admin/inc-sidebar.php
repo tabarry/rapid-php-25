@@ -18,14 +18,14 @@
                             <li><a href="<?php echo ADMIN_URL; ?>login.php" class="btn sideLink"><i class="fa fa-key"></i> Log In</a></li>
                         <?php } ?>
                         <?php if ($_SESSION[SESSION_PREFIX . 'user__ID'] != '') { ?>
-                            <li><a href="<?php echo ADMIN_URL; ?>" class="btn sideLinkReverse"><i class="fa fa-home"></i> Home</a></li>   
+                            <li><a href="<?php echo ADMIN_URL; ?>" class="btn sideLinkReverse"><i class="fa fa-home"></i> Home</a></li>
                             <li><a href="<?php echo ADMIN_URL; ?>notes<?php echo PHP_EXTENSION; ?>/" class="btn sideLink"><i class="fa fa-pencil"></i> Free Notes</a></li>
 
 
                             <li><a href="<?php echo ADMIN_URL; ?>settings<?php echo $tableCardLink; ?><?php echo PHP_EXTENSION; ?>/" class="btn sideLink"><i class="fa fa-cogs"></i> Settings</a></li>
                             <li><a href="<?php echo ADMIN_URL; ?>themes<?php echo PHP_EXTENSION; ?>/" class="btn sideLink"><i class="fa fa-photo"></i> Themes</a></li>
                             <li><a href="<?php echo ADMIN_URL; ?>users-update<?php echo PHP_EXTENSION; ?>/" class="btn sideLink"><i class="fa fa-user"></i> Update Profile</a></li>
-                            <li><a href="<?php echo ADMIN_URL; ?>login<?php echo PHP_EXTENSION; ?>/?do=logout" target="remote" class="btn sideLinkReverse"><i class="fa fa-power-off"></i> Log Out</a></li>   
+                            <li><a href="<?php echo ADMIN_URL; ?>login<?php echo PHP_EXTENSION; ?>/?do=logout" target="remote" class="btn sideLinkReverse"><i class="fa fa-power-off"></i> Log Out</a></li>
                             <li class="divider"></li>
                         <?php } ?>
                         <?php
@@ -38,28 +38,7 @@
                                 <?php
                                 $dir = './';
                                 $dir = scandir($dir);
-                                $exclude = array(
-                                    '.',
-                                    '..',
-                                    'index.html',
-                                    'index.php',
-                                    'login.php',
-                                    'reload.php',
-                                    'settings.php',
-                                    'template.php',
-                                    'logout.php',
-                                    'message.php',
-                                    'lost-password.php',
-                                    'notes.php',
-                                    'themes.php',
-                                    'modules.php',
-                                    'css',
-                                    'scss',
-                                    'fonts',
-                                    'img',
-                                    'js',
-                                    'less'
-                                );
+                                //$sidebarExclude comes from config.php
                                 foreach ($dir as $file) {
                                     if ((!in_array($file, $exclude)) && ($file[0] != '.')) {
                                         if ((!stristr($file, '-add')) && (!stristr($file, '-remote')) && (!stristr($file, '-update')) && (!stristr($file, 'inc-')) && (!stristr($file, '-cards'))) {
@@ -71,13 +50,13 @@
                                                 $fileNameShow = 'FAQs';
                                             }
                                             $fileLink = str_replace('.php', $tableCardLink . PHP_EXTENSION . '/', $file);
-                                            ?>    
+                                            ?>
                                             <li><a href="<?php echo ADMIN_URL . $fileLink; ?>" class="btn sideLink"><i class="fa fa-minus"></i> <?php echo ucwords($fileNameShow); ?></a></li>
                                             <?php
                                         }
                                     }
                                 }
-                                ?>         
+                                ?>
 
                                 <?php
                             }
