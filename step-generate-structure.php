@@ -64,7 +64,7 @@ while ($row = mysqli_fetch_array($rs)) {
 
         if (stristr($row2[1], 'int(')) {
             $js_required = "int";
-            $html5_type = 'text';
+            $html5_type = 'number';
         }
 
         if (stristr($row2[1], 'double(')) {
@@ -73,6 +73,10 @@ while ($row = mysqli_fetch_array($rs)) {
         }
 
         if (stristr($row2[1], 'float(')) {
+            $js_required = "float";
+            $html5_type = 'text';
+        }
+        if (stristr($row2[1], 'currency(')) {
             $js_required = "float";
             $html5_type = 'text';
         }

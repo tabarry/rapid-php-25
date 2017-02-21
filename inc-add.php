@@ -40,6 +40,9 @@ for ($i = 0; $i <= sizeof($_POST['frmField']) - 1; $i++) {
     if ($_POST['frmType'][$i] == 'Float') {
         include('inc-add-integerbox.php');
     }
+    if ($_POST['frmType'][$i] == 'Currency') {
+        include('inc-add-integerbox.php');
+    }
     if ($_POST['frmType'][$i] == 'Textarea') {
         include('inc-add-textarea.php');
     }

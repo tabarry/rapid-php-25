@@ -32,6 +32,9 @@ for ($i = 1; $i <= sizeof($_POST['frmType']) - 1; $i++) {
     if ($_POST['frmType'][$i] == 'Float') {
         $validateAs .= " '" . $_POST['frmField'][$i] . "_validateas'" . "=>'float', ";
     }
+    if ($_POST['frmType'][$i] == 'Currency') {
+        $validateAs .= " '" . $_POST['frmField'][$i] . "_validateas'" . "=>'float', ";
+    }
     if ($_POST['frmType'][$i] == 'Date') {
         $validateAs .= " '" . $_POST['frmField'][$i] . "_validateas'" . "=>'required', ";
     }
