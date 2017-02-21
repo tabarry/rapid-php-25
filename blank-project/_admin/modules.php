@@ -80,7 +80,7 @@ $pageTitle = 'Modules';
                             <!-- Heading -->
                             <div class="single-head">
                                 <!-- Heading -->
-                                <h3 class="pull-left"><i class="fa fa-desktop purple"></i> <?php echo $pageTitle; ?></h3>
+                                <h3 class="pull-left"><i class="fa fa-th-large purple"></i> <?php echo $pageTitle; ?></h3>
 
                                 <div class="clearfix"></div>
                             </div>
