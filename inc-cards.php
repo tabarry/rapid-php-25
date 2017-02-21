@@ -46,11 +46,11 @@ for ($i = 0; $i <= sizeof($_POST['frmShow']) - 1; $i++) {
         } elseif (strstr($_POST['frmShow'][$i], '_Picture')) {
 
             $fieldsToLoop .= "\$" . $_POST['frmShow'][$i] . "[\$key] = \$value['" . $_POST['frmShow'][$i] . "'];\n";
-            
+
             $fieldsToShow .= "<label>" . makeFieldLabel($_POST['frmShow'][$i]) . "</label>\n";
             $fieldsToShow .= "<?php
-                                                if ((isset(\$row['".$_POST['frmShow'][$i]."']) && \$row['".$_POST['frmShow'][$i]."'] != '') && (file_exists(ADMIN_UPLOAD_PATH . \$row['".$_POST['frmShow'][$i]."']))) {
-                                                    \$defaultImage = BASE_URL . 'files/' . \$row['".$_POST['frmShow'][$i]."'];
+                                                if ((isset(\$row['" . $_POST['frmShow'][$i] . "']) && \$row['" . $_POST['frmShow'][$i] . "'] != '') && (file_exists(ADMIN_UPLOAD_PATH . \$row['" . $_POST['frmShow'][$i] . "']))) {
+                                                    \$defaultImage = BASE_URL . 'files/' . \$row['" . $_POST['frmShow'][$i] . "'];
                                                 } else {
                                                     \$defaultImage = BASE_URL . 'files/default-image.png';
                                                 }
@@ -59,10 +59,22 @@ for ($i = 0; $i <= sizeof($_POST['frmShow']) - 1; $i++) {
         } else {
             if ($_POST['frmShow'][$i] == $_POST['frmOrderby']) {
                 $tag = "h1";
-                $suSubstr = "echo suSubstr(suUnstrip(\$row['" . $_POST['frmShow'][$i] . "']));";
+                if ($_POST['frmType'][$i] == 'Integer') {
+                    $suSubstr = "echo number_format(suUnstrip(\$row['" . $_POST['frmShow'][$i] . "']));";
+                } elseif ($_POST['frmType'][$i] == 'Double' || $_POST['frmType'][$i] == 'Float') {
+                    $suSubstr = "echo number_format(suUnstrip(\$row['" . $_POST['frmShow'][$i] . "']),2);";
+                } else {
+                    $suSubstr = "echo suSubstr(suUnstrip(\$row['" . $_POST['frmShow'][$i] . "']));";
+                }
             } else {
                 $tag = "p";
-                $suSubstr = "echo suSubstr(suUnstrip(\$row['" . $_POST['frmShow'][$i] . "']));";
+                if ($_POST['frmType'][$i] == 'Integer') {
+                    $suSubstr = "echo number_format(suUnstrip(\$row['" . $_POST['frmShow'][$i] . "']));";
+                } elseif ($_POST['frmType'][$i] == 'Double' || $_POST['frmType'][$i] == 'Float') {
+                    $suSubstr = "echo number_format(suUnstrip(\$row['" . $_POST['frmShow'][$i] . "']),2);";
+                } else {
+                    $suSubstr = "echo suSubstr(suUnstrip(\$row['" . $_POST['frmShow'][$i] . "']));";
+                }
             }
             $fieldsToShow .= "<label>" . makeFieldLabel($_POST['frmShow'][$i]) . "</label>\n
                               <{$tag}>

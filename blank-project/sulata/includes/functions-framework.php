@@ -730,12 +730,12 @@ if (!function_exists('suDoInsert')) {
 
 //sql,name of the unique field in table
     function suDoInsert($insertSql, $selectSql, $uniqueField) {
-        $result = suQuery($insertSql, FALSE);
-        $insertId = suInsertId();
+        $result = suQuery($insertSql);
+        $insertId = $result['insert_id'];
         if ($result['errno'] > 0) {
             if ($result['errno'] == 1062) {
                 $sql2 = $selectSql;
-                $result2 = suQuery($sql2, 'insert');
+                $result2 = suQuery($sql2);
                 $row2 = $result2['result'][0];
                 $insertId = $row2[$uniqueField];
             } else {
