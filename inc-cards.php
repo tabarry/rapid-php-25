@@ -93,11 +93,19 @@ $colData.="
     <?php if ((\$editAccess == TRUE) || (\$deleteAccess == TRUE)) { ?>
     <td style=\"text-align: center;\">
     <?php if (\$editAccess == TRUE) { ?>
-                                                <a href=\"<?php echo ADMIN_URL;?>" . $_POST['frmFormsetvalue'] . "-update<?php echo PHP_EXTENSION;?>/<?php echo \$row['" . $_POST['primary'] . "'];?>/\"><img border=\"0\" src=\"<?php echo BASE_URL; ?>sulata/images/edit.png\" title=\"<?php echo EDIT_RECORD; ?>\"/></a>
-                                                    <?php } ?>
+                                                <a title=\"<?php echo EDIT; ?>\" id=\"card_<?php echo \$row['" . $_POST['primary'] . "']; ?>_edit\" href=\"<?php echo ADMIN_URL;?>" . $_POST['frmFormsetvalue'] . "-update<?php echo PHP_EXTENSION;?>/<?php echo \$row['" . $_POST['primary'] . "'];?>/\"><i class=\"fa fa-edit\"></i></a>
+                                                    
+<?php } ?>
+                                                    
+<?php if (\$duplicateAccess == TRUE) { ?>
+                                                <a title=\"<?php echo DUPLICATE; ?>\" id=\"card_<?php echo \$row['" . $_POST['primary'] . "']; ?>_duplicate\" href=\"<?php echo ADMIN_URL;?>" . $_POST['frmFormsetvalue'] . "-update<?php echo PHP_EXTENSION;?>/<?php echo \$row['" . $_POST['primary'] . "'];?>/duplicate/\"><i class=\"fa fa-copy\"></i></a>
+                  <?php } ?>                                  
 <?php if (\$deleteAccess == TRUE) { ?>
-                                                <a onclick=\"return delRecord(this, '<?php echo CONFIRM_DELETE; ?>')\" href=\"<?php echo ADMIN_URL; ?>" . $_POST['frmFormsetvalue'] . "-remote<?php echo PHP_EXTENSION;?>/delete/<?php echo \$row['" . $_POST['primary'] . "']; ?>/\" target=\"remote\"><img border=\"0\" src=\"<?php echo BASE_URL; ?>sulata/images/delete.png\" title=\"<?php echo DELETE_RECORD; ?>\"/></a>
+                                                <a title=\"<?php echo DELETE; ?>\" id=\"card_<?php echo \$row['" . $_POST['primary'] . "']; ?>_del\" onclick=\"return delById('card_<?php echo \$row['" . $_POST['primary'] . "']; ?>', '<?php echo CONFIRM_DELETE; ?>')\" href=\"<?php echo ADMIN_URL; ?>" . $_POST['frmFormsetvalue'] . "-remote<?php echo PHP_EXTENSION;?>/delete/<?php echo \$row['" . $_POST['primary'] . "']; ?>/\" target=\"remote\"><i class=\"fa fa-trash\"></i></a>
                                                     <?php } ?>
+<?php if (\$restoreAccess == TRUE) { ?>
+                                                <a title=\"<?php echo RESTORE; ?>\" id=\"card_<?php echo \$row['" . $_POST['primary'] . "']; ?>_restore\" href=\"<?php echo ADMIN_URL; ?>" . $_POST['frmFormsetvalue'] . "-remote<?php echo PHP_EXTENSION;?>/restore/<?php echo \$row['" . $_POST['primary'] . "']; ?>/\" target=\"remote\" style=\"display:none\"><i class=\"fa fa-undo\"></i></a>
+                                                    <?php } ?>    
                                             </td>
                                             <?php } ?>
                                             
@@ -121,7 +129,7 @@ $cardCode = "
                                     <fieldset id=\"search-area1\">
                                         <label class=\"col-xs-12 col-sm-12 col-md-12 col-lg-12\"><i class=\"fa fa-search blue\"></i> Search by " . makeFieldLabel($_POST['frmSearchby']) . "</label>
                                         <div class=\"col-xs-7 col-sm-10 col-md-10 col-lg-10\">
-                                        <input id=\"q\" type=\"text\" value=\"\" name=\"q\" class=\"form-control\" autocomplete=\"off\">
+                                        <input id=\"q\" type=\"search\" value=\"\" name=\"q\" class=\"form-control\" autocomplete=\"off\" autofocus=\"autofocus\">
                                         </div>
                                         <div class=\"col-xs-5 col-sm-2 col-md-2 col-lg-2\">
                                         <input id=\"Submit\" type=\"submit\" value=\"Search\" name=\"Submit\" class=\"btn btn-primary pull-right\">
@@ -166,10 +174,10 @@ if (!\$_GET['sort']) {
     
     \$sql = \"\$sql \$where \$sort LIMIT \" . \$_GET['start'] . \",\" . \$getSettings['page_size'];
 
-    \$result = suQuery(\$sql);
-    \$numRows = suNumRows(\$result);
 
-    while(\$row=  suFetch(\$result)){
+    \$result = suQuery(\$sql);
+    \$numRows = \$result['num_rows'];
+    foreach (\$result['result'] as \$row) {
     
 ?>
                                         <!-- CARDS START -->
@@ -178,15 +186,20 @@ if (!\$_GET['sort']) {
                                             <?php if ((\$editAccess == TRUE) || (\$deleteAccess == TRUE)) { ?>
 
                                                     <header>
-                                                        <?php if (\$editAccess == TRUE) { ?>
-
-                                                            <a href=\"<?php echo ADMIN_URL; ?>" . $_POST['frmFormsetvalue'] . "-update<?php echo PHP_EXTENSION;?>/<?php echo \$row['" . $_POST['primary'] . "']; ?>/\"><i class=\"fa fa-edit\"></i></a>
-                                                        <?php } ?>
-
-                                                        <?php if (\$deleteAccess == TRUE) { ?>
-
-                                                            <a onclick=\"return delById('card_<?php echo \$row['" . $_POST['primary'] . "']; ?>', '<?php echo CONFIRM_DELETE; ?>')\" href=\"<?php echo ADMIN_URL; ?>" . $_POST['frmFormsetvalue'] . "-remote<?php echo PHP_EXTENSION;?>/delete/<?php echo \$row['" . $_POST['primary'] . "']; ?>/\" target=\"remote\"><i class=\"fa fa-trash\"></i></a>
-                                                        <?php } ?>
+                                                           <?php if (\$editAccess == TRUE) { ?>
+                                                <a title=\"<?php echo EDIT; ?>\" id=\"card_<?php echo \$row['" . $_POST['primary'] . "']; ?>_edit\" href=\"<?php echo ADMIN_URL;?>" . $_POST['frmFormsetvalue'] . "-update<?php echo PHP_EXTENSION;?>/<?php echo \$row['" . $_POST['primary'] . "'];?>/\"><i class=\"fa fa-edit\"></i></a>
+                                                    
+<?php } ?>
+                                                    
+<?php if (\$duplicateAccess == TRUE) { ?>
+                                                <a title=\"<?php echo DUPLICATE; ?>\" id=\"card_<?php echo \$row['" . $_POST['primary'] . "']; ?>_duplicate\" href=\"<?php echo ADMIN_URL;?>" . $_POST['frmFormsetvalue'] . "-update<?php echo PHP_EXTENSION;?>/<?php echo \$row['" . $_POST['primary'] . "'];?>/duplicate/\"><i class=\"fa fa-copy\"></i></a>
+                  <?php } ?>                                  
+<?php if (\$deleteAccess == TRUE) { ?>
+                                                <a title=\"<?php echo DELETE; ?>\" id=\"card_<?php echo \$row['" . $_POST['primary'] . "']; ?>_del\" onclick=\"return delById('card_<?php echo \$row['" . $_POST['primary'] . "']; ?>', '<?php echo CONFIRM_DELETE; ?>')\" href=\"<?php echo ADMIN_URL; ?>" . $_POST['frmFormsetvalue'] . "-remote<?php echo PHP_EXTENSION;?>/delete/<?php echo \$row['" . $_POST['primary'] . "']; ?>/\" target=\"remote\"><i class=\"fa fa-trash\"></i></a>
+                                                    <?php } ?>
+<?php if (\$restoreAccess == TRUE) { ?>
+                                                <a title=\"<?php echo RESTORE; ?>\" id=\"card_<?php echo \$row['" . $_POST['primary'] . "']; ?>_restore\" href=\"<?php echo ADMIN_URL; ?>" . $_POST['frmFormsetvalue'] . "-remote<?php echo PHP_EXTENSION;?>/restore/<?php echo \$row['" . $_POST['primary'] . "']; ?>/\" target=\"remote\" style=\"display:none\"><i class=\"fa fa-undo\"></i></a>
+                                                    <?php } ?>   
 
                                                     </header>
                                                 <?php } ?>
@@ -198,7 +211,7 @@ if (!\$_GET['sort']) {
 
                                     </div>
                                     <!-- CARDS END -->
-    <?php }suFree(\$result) ?>
+    <?php } ?>
 <div class=\"clearfix\"></div>
                                    
                     <?php

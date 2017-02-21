@@ -202,7 +202,7 @@ if (suSegment(1) == 'stream-pdf' && $downloadAccessPDF == TRUE) {
                                                 <?php if (($editAccess == TRUE) || ($deleteAccess == TRUE)) { ?>
                                                     <td style="text-align: center;">
                                                         <?php if ($editAccess == TRUE) { ?>
-                                                            <a title="<?php echo EDIT; ?>" id="card_<?php echo $row['faq__ID']; ?>_edit"href="<?php echo ADMIN_URL; ?>faqs-update<?php echo PHP_EXTENSION; ?>/<?php echo $row['faq__ID']; ?>/"><i class="fa fa-edit"></i></a>
+                                                            <a title="<?php echo EDIT; ?>" id="card_<?php echo $row['faq__ID']; ?>_edit" href="<?php echo ADMIN_URL; ?>faqs-update<?php echo PHP_EXTENSION; ?>/<?php echo $row['faq__ID']; ?>/"><i class="fa fa-edit"></i></a>
                                                         <?php } ?>
                                                         <?php if ($duplicateAccess == TRUE) { ?>
                                                             <a title="<?php echo DUPLICATE; ?>" id="card_<?php echo $row['faq__ID']; ?>_duplicate" href="<?php echo ADMIN_URL; ?>faqs-update<?php echo PHP_EXTENSION; ?>/<?php echo $row['faq__ID']; ?>/duplicate/"><i class="fa fa-copy"></i></a>

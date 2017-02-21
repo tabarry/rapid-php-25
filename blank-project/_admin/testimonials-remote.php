@@ -150,9 +150,7 @@ if ($do == "restore") {
 //Check referrer
     suCheckRef();
     $id = suSegment(2);
-//Delete from database by updating just the state
-    //make a unique id attach to previous unique field
-    $uid = uniqid() . '-';
+
     $sql = "UPDATE sulata_testimonials SET testimonial__Name=SUBSTR(testimonial__Name," . (UID_LENGTH + 1) . "), testimonial__Last_Action_On ='" . date('Y-m-d H:i:s') . "',testimonial__Last_Action_By='" . $_SESSION[SESSION_PREFIX . 'user__Name'] . "', testimonial__dbState='Live' WHERE testimonial__ID = '" . $id . "'";
     $result = suQuery($sql);
     if ($result['errno'] > 0) {

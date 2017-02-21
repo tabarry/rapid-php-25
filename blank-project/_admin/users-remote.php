@@ -228,9 +228,7 @@ if ($do == "restore") {
 //Check referrer
     suCheckRef();
     $id = suSegment(2);
-//Delete from database by updating just the state
-    //make a unique id attach to previous unique field
-    $uid = uniqid() . '-';
+
     $sql = "UPDATE sulata_users SET user__Email=SUBSTR(user__Email," . (UID_LENGTH + 1) . "), user__Last_Action_On ='" . date('Y-m-d H:i:s') . "',user__Last_Action_By='" . $_SESSION[SESSION_PREFIX . 'user__Name'] . "', user__dbState='Live' WHERE user__ID = '" . $id . "'";
     $result = suQuery($sql);
     if ($result['errno'] > 0) {

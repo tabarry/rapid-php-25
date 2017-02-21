@@ -77,10 +77,22 @@ if ($multipart == TRUE) {
 } else {
     $multipart = '';
 }
+//For update
+$pageTitle = ucwords(str_replace('-', ' ', substr(trim($_POST['frmFormsetvalue']), 0, -2)));
 
-$pageTitle = 'Update ' . ucwords(str_replace('-', ' ', $_POST['frmFormsetvalue']));
-$pageTitle = "\$pageName='" . $pageTitle . "';\$pageTitle='" . $pageTitle . "';";
 
+$pageTitle = "
+//Check if action is duplicate
+if (suSegment(2) == 'duplicate') {
+    \$do = 'add';
+    \$pageName = 'Duplicate " . $pageTitle . "';
+    \$pageTitle = 'Duplicate " . $pageTitle . "';
+} else {
+    \$do = 'update';
+    \$pageName = 'Update " . $pageTitle . "';
+    \$pageTitle = 'Update " . $pageTitle . "';
+}
+";
 /////////////////////////
 $fieldPrefix = explode('__', $_POST['frmField'][0]);
 $fieldPrefix = $fieldPrefix[0];
@@ -93,14 +105,14 @@ if(!is_numeric(\$id)){
 }
 \$sql = \"SELECT " . $fieldsToUpdate . " FROM " . $_POST['table'] . " WHERE " . $fieldPrefix . "__dbState='Live' AND " . $_POST['primary'] . "='\" . \$id . \"'\";
 \$result = suQuery(\$sql);
-if (suNumRows(\$result) == 0) {
+\$row = \$result['result'][0];
+if (\$result['num_rows'] == 0) {
     suExit(INVALID_RECORD);
 }
-\$row = suFetch(\$result);
-suFree(\$result);    
+  
 ";
 $updateCodeStart = '
-        <form class="form-horizontal" action="<?php echo ADMIN_SUBMIT_URL; ?>' . $_POST['frmFormsetvalue'] . '-remote<?php echo PHP_EXTENSION;?>/update/" accept-charset="utf-8" name="suForm" id="suForm" method="post" target="remote" ' . $multipart . '>
+        <form class="form-horizontal" action="<?php echo ADMIN_SUBMIT_URL; ?>' . $_POST['frmFormsetvalue'] . '-remote<?php echo PHP_EXTENSION;?>/<?php echo $do ; ?>/" accept-charset="utf-8" name="suForm" id="suForm" method="post" target="remote" ' . $multipart . '>
             <div class="gallery clearfix">';
 
 $updateCodeEnd = "
@@ -117,6 +129,11 @@ $updateCodeEnd = "
         echo suInput('input', \$arg);                       
         //Id field
         \$arg = array('type' => 'hidden', 'name' => '" . $_POST['primary'] . "', 'id' => '" . $_POST['primary'] . "', 'value' => \$id);
+        echo suInput('input', \$arg);
+        //If Duplicate
+        if (\$do == 'add') {
+            \$arg = array('type' => 'hidden', 'name' => 'duplicate', 'id' => 'duplicate', 'value' => '1');
+        }
         echo suInput('input', \$arg);
         ?>
         <p>&nbsp;</p>

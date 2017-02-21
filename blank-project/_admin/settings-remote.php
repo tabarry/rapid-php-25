@@ -156,9 +156,7 @@ if ($do == "restore") {
 //Check referrer
     suCheckRef();
     $id = suSegment(2);
-//Delete from database by updating just the state
-    //make a unique id attach to previous unique field
-    $uid = uniqid() . '-';
+
     $sql = "UPDATE sulata_settings SET setting__Setting=SUBSTR(setting__Setting," . (UID_LENGTH + 1) . "),setting__Key=SUBSTR(setting__Key," . (UID_LENGTH + 1) . "), setting__Last_Action_On ='" . date('Y-m-d H:i:s') . "',setting__Last_Action_By='" . $_SESSION[SESSION_PREFIX . 'user__Name'] . "', setting__dbState='Live' WHERE setting__ID = '" . $id . "'";
     $result = suQuery($sql);
     if ($result['errno'] > 0) {

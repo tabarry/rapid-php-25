@@ -180,9 +180,7 @@ if ($do == "restore") {
 //Check referrer
     suCheckRef();
     $id = suSegment(2);
-//Delete from database by updating just the state
-    //make a unique id attach to previous unique field
-    $uid = uniqid() . '-';
+
     $sql = "UPDATE sulata_headers SET header__Title=SUBSTR(header__Title," . (UID_LENGTH + 1) . "), header__Last_Action_On ='" . date('Y-m-d H:i:s') . "',header__Last_Action_By='" . $_SESSION[SESSION_PREFIX . 'user__Name'] . "', header__dbState='Live' WHERE header__ID = '" . $id . "'";
     $result = suQuery($sql);
     if ($result['errno'] > 0) {

@@ -75,7 +75,8 @@ if ($multipart == TRUE) {
 } else {
     $multipart = '';
 }
-$pageTitle = 'Add ' . ucwords(str_replace('-', ' ', $_POST['frmFormsetvalue']));
+$pageTitle = 'Add ' . ucwords(str_replace('-', ' ', substr(trim($_POST['frmFormsetvalue']), 0, -2)));
+
 $pageTitle = "\$pageName='" . $pageTitle . "';\$pageTitle='" . $pageTitle . "';";
 $addCodeStart = '
         <form class="form-horizontal" action="<?php echo ADMIN_SUBMIT_URL; ?>' . $_POST['frmFormsetvalue'] . '-remote<?php echo PHP_EXTENSION;?>/add/" accept-charset="utf-8" name="suForm" id="suForm" method="post" target="remote" ' . $multipart . '>

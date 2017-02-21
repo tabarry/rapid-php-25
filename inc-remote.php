@@ -66,7 +66,7 @@ for ($i = 1; $i <= sizeof($_POST['frmType']) - 1; $i++) {
     }
 }
 $validateAs = "\$validateAsArray=array(" . $validateAs . ");";
-
+$addReloadParent='';
 //if auto complete///////
 if ($_POST['frmType'][$i] == 'Autocomplete') {
     $setInsertAutocompleteSql = " \$sql = \"SELECT " . $fieldId . " AS f1, " . $fieldText . " AS f2 FROM " . $table . " WHERE ".$fieldPrefix1."__dbState='Live' AND  " . $fieldText . " LIKE '%\" . suUnstrip(\$_REQUEST['term']) . \"%' ORDER BY f2\";
@@ -147,10 +147,10 @@ if (\$do == \"add\") {
 " . $extraSqlx1 . $extraSqlx2 . $extraSqlx3 . "
     //build query for file  uploads
     \$sql = \"INSERT INTO " . $_POST['table'] . " SET " . $setInsertSql . " .\$extraSql;
-    suQuery(\$sql, FALSE);
+    \$result = suQuery(\$sql);
 
-    if (suErrorNo() > 0) {
-        if (suErrorNo() == 1062) {
+    if (\$result['errno'] > 0) {
+        if (\$result['errno'] == 1062) {
             \$error = sprintf(DUPLICATION_ERROR, '" . $_POST['unique'] . "');
         } else {
             \$error = MYSQL_ERROR;
@@ -164,18 +164,27 @@ if (\$do == \"add\") {
             parent.\$(\"html, body\").animate({ scrollTop: parent.\$(\"html\").offset().top }, \"slow\");
         ');
     } else {
-        \$max_id = suInsertId();
+        \$max_id = \$result['insert_id'];
         //Upload files
         " . $uploadCheck . "
             
         /*POST INSERT PLACE*/
         " . $addCheckBoxRemote . "
+        if (\$_POST['referrer'] == '') {
+            \$_POST['referrer'] = ADMIN_URL . '".$_POST['frmFormsetvalue']."-cards/';
+        }
+        if (\$_POST['duplicate'] == 1) {
+            \$doJs = \"parent.suReset(\\\"suForm\\\");parent.window.location.href='\" . \$_POST['referrer'] . \"';\";
+        } else {
+            \$doJs = 'parent.suForm.reset();';
+        }
     suPrintJs('
             parent.suToggleButton(0);
             parent.\$(\"#error-area\").hide();
             parent.\$(\"#message-area\").show();
             parent.\$(\"#message-area\").html(\"' . SUCCESS_MESSAGE . '\");
             parent.\$(\"html, body\").animate({ scrollTop: parent.\$(\"html\").offset().top }, \"slow\");
+            ' . \$doJs . '
             $addReloadParent
 
         ');
@@ -208,10 +217,10 @@ if (\$do == \"update\") {
     \$extraSql = '';
 " . $extraSqlx1 . $extraSqlx2 . $extraSqlx3 . "
     \$sql = \"UPDATE " . $_POST['table'] . " SET " . $setInsertSql . " .\$extraSql.\" WHERE " . $_POST['primary'] . "='\" . \$_POST['" . $_POST['primary'] . "'] . \"'\";
-    suQuery(\$sql, FALSE);
+    \$result = suQuery(\$sql);
 
-    if (suErrorNo() > 0) {
-        if (suErrorNo() == 1062) {
+    if (\$result['errno'] > 0) {
+        if (\$result['errno'] == 1062) {
             \$error = sprintf(DUPLICATION_ERROR, '" . $_POST['unique'] . "');
         } else {
             \$error = MYSQL_ERROR;
@@ -254,6 +263,39 @@ if (\$do == \"delete\") {
 
 }
 
+
+//Restore record
+if (\$do == \"restore\") {
+//Check referrer
+    suCheckRef();
+    \$id = suSegment(2);
+
+    
+        \$sql = \"UPDATE " . $_POST['table'] . " SET " . $_POST['uniqueField'] . "=SUBSTR(" . $_POST['uniqueField'] . ",\".(UID_LENGTH + 1).\"), " . $fieldPrefix . "__Last_Action_On ='\" . date('Y-m-d H:i:s') . \"'," . $fieldPrefix . "__Last_Action_By='\" . \$_SESSION[SESSION_PREFIX . 'user__Name'] . \"', " . $fieldPrefix . "__dbState='Live' WHERE " . $_POST['primary'] . " = '\" . \$id . \"'\";
+    \$result = suQuery(\$sql);
+    if (\$result['errno'] > 0) {
+            if (\$result['errno'] == 1062) {
+                \$error = sprintf(DUPLICATION_ERROR_ON_UPDATE, '" . $_POST['unique'] . "');
+            } else {
+                \$error = MYSQL_ERROR;
+            }
+
+            suPrintJs('
+                parent.\$(\"#message-area\").hide();
+                parent.\$(\"#error-area\").show();
+                parent.\$(\"#error-area\").html(\"<ul><li>' . \$error . '</li></ul>\");
+                parent.\$(\"html, body\").animate({ scrollTop: parent.\$(\"html\").offset().top }, \"slow\");
+            ');
+        } else {
+            suPrintJs('
+                parent.restoreById(\"card_' . \$id . '\");
+                parent.\$(\"#error-area\").hide();
+                parent.\$(\"#message-area\").show();
+                parent.\$(\"#message-area\").html(\"' . RECORD_RESTORED . '\");
+                parent.\$(\"html, body\").animate({ scrollTop: parent.\$(\"html\").offset().top }, \"slow\");
+            ');
+        }
+}
 
 ";
 $remoteCode = $remoteCode . $remoteCodeAutoComplete;
