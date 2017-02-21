@@ -48,7 +48,7 @@ a:focus {
     color: #51d466;
 }
 .lblue {
-    color: #119d88;
+    color: #1967A7;
 }
 .blue {
     color: #609cec;
@@ -87,7 +87,7 @@ a:focus {
     background-color: #51d466;
 }
 .br-lblue {
-    background-color: #119d88;
+    background-color: #1967A7;
 }
 .br-blue {
     background-color: #609cec;
@@ -138,10 +138,10 @@ a:focus {
     background: #42c557;
 }
 .btn.btn-info {
-    background: #119d88;
+    background: #59A215;
 }
 .btn.btn-info:hover {
-    background: #2bbdd2;
+    background: #1967a7;
 }
 .btn.btn-primary {
     background: #609cec;

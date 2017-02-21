@@ -534,7 +534,7 @@
             'setting__Type_validateas'=>'enum',
             'setting__Type_html5_req'=>'required',
             'setting__Type_html5_type'=>'text',
-            'setting__Type_array'=>array(''=>'Select..','Private'=>'Private','Public'=>'Public','Site'=>'Site',),
+            'setting__Type_array'=>array(''=>'Select..','Private'=>'Private','Public'=>'Public',),
             
             'setting__Last_Action_On_req'=>'*',
             'setting__Last_Action_On_title'=>'Last Action On',

@@ -82,8 +82,8 @@ $pageTitle = 'Add Settings';
                                 <!-- Heading -->
                                 <h3 class="pull-left"><i class="fa fa-desktop purple"></i> <?php echo $pageTitle; ?></h3>
                                 <div class="pull-right">
-                                    <a href="<?php echo ADMIN_URL; ?>settings-cards<?php echo PHP_EXTENSION;?>/"><i class="fa fa-th-large"></i></a>
-                                    <a href="<?php echo ADMIN_URL; ?>settings<?php echo PHP_EXTENSION;?>/"><i class="fa fa-table"></i></a>
+                                    <a href="<?php echo ADMIN_URL; ?>settings-cards<?php echo PHP_EXTENSION; ?>/"><i class="fa fa-th-large"></i></a>
+                                    <a href="<?php echo ADMIN_URL; ?>settings<?php echo PHP_EXTENSION; ?>/"><i class="fa fa-table"></i></a>
                                 </div>
 
 
@@ -99,13 +99,14 @@ $pageTitle = 'Add Settings';
                                     <p></p>
                                 </div>
                                 <!--SU STARTS-->
-                                <form class="form-horizontal" action="<?php echo ADMIN_SUBMIT_URL; ?>settings-remote<?php echo PHP_EXTENSION;?>/add/" accept-charset="utf-8" name="suForm" id="suForm" method="post" target="remote" >			
+                                <form class="form-horizontal" action="<?php echo ADMIN_SUBMIT_URL; ?>settings-remote<?php echo PHP_EXTENSION; ?>/add/" accept-charset="utf-8" name="suForm" id="suForm" method="post" target="remote" >			
                                     <div class="gallery clearfix">
                                         <div class="form-group">
                                             <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                                                 <label><?php echo $dbs_sulata_settings['setting__Setting_req']; ?>Setting:</label>
                                                 <?php
-                                                $arg = array('type' => 'text', 'name' => 'setting__Setting', 'id' => 'setting__Setting', 'autocomplete' => 'off', 'maxlength' => $dbs_sulata_settings['setting__Setting_max'], 'class' => 'form-control');
+                                                $js = "return $('#setting__Key').val(doSlugify(this.value,'_'));";
+                                                $arg = array('type' => 'text', 'name' => 'setting__Setting', 'id' => 'setting__Setting', 'autocomplete' => 'off', 'maxlength' => $dbs_sulata_settings['setting__Setting_max'], 'class' => 'form-control', 'onkeyup' => $js);
                                                 echo suInput('input', $arg);
                                                 ?>
                                             </div>

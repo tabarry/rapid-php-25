@@ -17,7 +17,11 @@ define('VALID_CC', '%s must be a valid credit card number.');
 define('VALID_NUMBER', '%s must be a valid number.');
 define('VALID_FILE_FORMAT', 'Only %s allowed in %s.');
 define('MYSQL_ERROR', 'Sorry, there has been an error processing the form. Please try again.');
+define('GENERIC_ERROR', 'Sorry, there has been an error, you may try again.');
+
 define('DUPLICATION_ERROR', 'A record with the same %s already exists.');
+define('DUPLICATION_ERROR_ON_UPDATE', 'A record with the same %s has been created after your deletion, hence this record cannot be restored.');
+
 define('SUCCESS_MESSAGE', 'Record added successfully.');
 define('VIEW_FILE', 'View uploaded file..');
 define('VALIDATE_EMPTY_CHECKBOX', 'Please select at least one checkbox.');
@@ -27,6 +31,8 @@ define('LOST_PASSWORD_DATA_SENT', 'Your login details have been emailed to you.'
 define('LOST_PASSWORD_SUBJECT', 'Your %s login information');
 define('OLD_PASSWORD_MESSAGE', 'Old password will not be displayed and the password boxes below will show empty.');
 define('CONFIRM_DELETE', 'Are you sure?');
+define('CONFIRM_DELETE_RESTORE', 'This record will be deleted but can be restored, till this page is reloaded.');
+define('RECORD_RESTORED', 'Record restored successfully.');
 define('EDIT_RECORD', 'Edit record.');
 define('DELETE_RECORD', 'Delete record.');
 define('RECORD_NOT_FOUND', 'There are no records available to display.');
@@ -35,6 +41,13 @@ define('INACTIVE_MESSAGE', 'Sorry, your access have been disabled. Please contac
 define('NOTES_UDPATE_MESSAGE', 'Notes updated successfully.');
 define('MULTIPLE_LOGIN_ERROR_MESSAGE', 'You have logged in from another IP address, hence this session has been logged out.');
 define('ALLOWED_ATTACHMENTS_MESSAGE', "The following files were not uploaded due to unallowed file formats.\\n\\n %s \\nOnly %s formats are allowed.\\n");
+define('TESTIMONIAL_PLACEHOLDER', 'Name, Company and Designation');
+/** Title Tags **/
+define('EDIT', 'Edit');
+define('DUPLICATE', 'Duplicate');
+define('DELETE', 'Delete');
+define('RESTORE', 'Restore');
+
 /** Google Plus * */
 define('GOOGLE_CANCELLED', 'Authentication cancelled.');
 define('GOOGLE_INVALID_USER', 'The Google user logged in does not have access to this web site. Please log out from Google and log in again.');

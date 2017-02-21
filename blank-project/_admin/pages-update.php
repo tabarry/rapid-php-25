@@ -4,17 +4,27 @@ include('../sulata/includes/functions.php');
 include('../sulata/includes/connection.php');
 include('../sulata/includes/get-settings.php');
 include('../sulata/includes/db-structure.php');
-$pageName = 'Add Pages';
-$pageTitle = 'Add Pages';
 checkLogin();
+
+//Check if action is duplicate
+if (suSegment(2) == 'duplicate') {
+    $do = 'add';
+    $pageName = 'Duplicate Page';
+    $pageTitle = 'Duplicate Page';
+} else {
+    $do = 'update';
+    $pageName = 'Add Page';
+    $pageTitle = 'Add Page';
+}
+
 $id = suSegment(1);
+
 $sql = "SELECT page__ID,page__Name,page__Heading,page__Permalink,page__Title,page__Keyword,page__Description,page__Header,page__Short_Text,page__Long_Text,page__Link_Position,page__Parent,page__Sequence FROM sulata_pages WHERE page__ID='" . $id . "' AND page__dbState='Live'";
 $result = suQuery($sql);
-if (suNumRows($result) == 0) {
+$row = $result['result'][0];
+if ($result['num_rows'] == 0) {
     suExit(INVALID_RECORD);
 }
-$row = suFetch($result);
-suFree($result);
 ?>
 <!DOCTYPE html>
 <html>
@@ -90,8 +100,8 @@ suFree($result);
                                 <!-- Heading -->
                                 <h3 class="pull-left"><i class="fa fa-desktop purple"></i> <?php echo $pageTitle; ?></h3>
                                 <div class="pull-right">
-                                    <a href="<?php echo ADMIN_URL; ?>pages-cards<?php echo PHP_EXTENSION;?>/"><i class="fa fa-th-large"></i></a>
-                                    <a href="<?php echo ADMIN_URL; ?>pages<?php echo PHP_EXTENSION;?>/"><i class="fa fa-table"></i></a>
+                                    <a href="<?php echo ADMIN_URL; ?>pages-cards<?php echo PHP_EXTENSION; ?>/"><i class="fa fa-th-large"></i></a>
+                                    <a href="<?php echo ADMIN_URL; ?>pages<?php echo PHP_EXTENSION; ?>/"><i class="fa fa-table"></i></a>
                                 </div>
 
                                 <div class="clearfix"></div>
@@ -106,14 +116,15 @@ suFree($result);
                                     <p></p>
                                 </div>
                                 <!--SU STARTS-->
-                                <form class="form-horizontal" action="<?php echo ADMIN_SUBMIT_URL; ?>pages-remote<?php echo PHP_EXTENSION;?>/update/" accept-charset="utf-8" name="suForm" id="suForm" method="post" target="remote" >			
+                                <form class="form-horizontal" action="<?php echo ADMIN_SUBMIT_URL; ?>pages-remote<?php echo PHP_EXTENSION; ?>/<?php echo $do; ?>/" accept-charset="utf-8" name="suForm" id="suForm" method="post" target="remote" >			
                                     <div class="gallery clearfix">
                                         <div class="form-group">
                                             <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                                                 <label>
                                                     <?php echo $dbs_sulata_pages['page__Name_req']; ?>Name:</label>
                                                 <?php
-                                                $arg = array('type' => $dbs_sulata_pages['page__Name_html5_type'], 'name' => 'page__Name', 'id' => 'page__Name', 'autocomplete' => 'off', 'maxlength' => $dbs_sulata_pages['page__Name_max'], $dbs_sulata_pages['page__Name_html5_req'] => $dbs_sulata_pages['page__Name_html5_req'], 'class' => 'form-control', 'value' => suUnstrip($row['page__Name']));
+                                                $js = "return $('#page__Permalink').val(doSlugify(this.value,'-'));";
+                                                $arg = array('type' => $dbs_sulata_pages['page__Name_html5_type'], 'name' => 'page__Name', 'id' => 'page__Name', 'autocomplete' => 'off', 'maxlength' => $dbs_sulata_pages['page__Name_max'], $dbs_sulata_pages['page__Name_html5_req'] => $dbs_sulata_pages['page__Name_html5_req'], 'class' => 'form-control', 'value' => suUnstrip($row['page__Name']), 'onkeyup' => $js);
                                                 echo suInput('input', $arg);
                                                 ?>
 
@@ -170,7 +181,7 @@ suFree($result);
                                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                                 <label><?php echo $dbs_sulata_pages['page__Header_req']; ?>Header:
                                                     <?php if ($addAccess == 'true') { ?>    
-                                                        <a title="Add new record.." rel="prettyPhoto[iframes]" href="<?php echo ADMIN_URL; ?>headers-add<?php echo PHP_EXTENSION;?>/?overlay=yes&iframe=true&width=50%&height=100%"><img border='0' src='<?php echo BASE_URL; ?>sulata/images/add-icon.png'/></a>
+                                                        <a title="Add new record.." rel="prettyPhoto[iframes]" href="<?php echo ADMIN_URL; ?>headers-add<?php echo PHP_EXTENSION; ?>/?overlay=yes&iframe=true&width=50%&height=100%"><img border='0' src='<?php echo BASE_URL; ?>sulata/images/add-icon.png'/></a>
 
                                                         <a onclick="suReload('page__Header', '<?php echo ADMIN_URL; ?>', '<?php echo suCrypt('sulata_headers'); ?>', '<?php echo suCrypt('header__ID'); ?>', '<?php echo suCrypt('header__Title'); ?>');" href="javascript:;"><img border='0' src='<?php echo BASE_URL; ?>sulata/images/reload-icon.png'/></a>    
                                                     <?php } ?>    
@@ -217,13 +228,12 @@ suFree($result);
                                             <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
                                                 <label><?php echo $dbs_sulata_pages['page__Parent_req']; ?>Parent:
                                                     <?php if ($addAccess == 'true') { ?>    
-                                                        <a title="Add new record.." rel="prettyPhoto[iframes]" href="<?php echo ADMIN_URL; ?>pages-add<?php echo PHP_EXTENSION;?>/?overlay=yes&iframe=true&width=50%&height=100%"><img border='0' src='<?php echo BASE_URL; ?>sulata/images/add-icon.png'/></a>
+                                                        <a title="Add new record.." rel="prettyPhoto[iframes]" href="<?php echo ADMIN_URL; ?>pages-add<?php echo PHP_EXTENSION; ?>/?overlay=yes&iframe=true&width=50%&height=100%"><img border='0' src='<?php echo BASE_URL; ?>sulata/images/add-icon.png'/></a>
 
                                                         <a onclick="suReload('page__Parent', '<?php echo ADMIN_URL; ?>', '<?php echo suCrypt('sulata_pages'); ?>', '<?php echo suCrypt('page__ID'); ?>', '<?php echo suCrypt('page__Name'); ?>');" href="javascript:;"><img border='0' src='<?php echo BASE_URL; ?>sulata/images/reload-icon.png'/></a>    
                                                     <?php } ?>    
                                                 </label>
                                                 <?php
-                                                
                                                 $sql = "SELECT page__ID AS f1, page__Name AS f2 FROM sulata_pages  WHERE page__dbState='Live' ORDER BY f2";
 
                                                 $options = suFillDropdown($sql);
@@ -254,6 +264,12 @@ suFree($result);
 
                                         //Id field
                                         $arg = array('type' => 'hidden', 'name' => 'page__ID', 'id' => 'page__ID', 'value' => $id);
+                                        echo suInput('input', $arg);
+
+                                        //If Duplicate
+                                        if ($do == 'add') {
+                                            $arg = array('type' => 'hidden', 'name' => 'duplicate', 'id' => 'duplicate', 'value' => '1');
+                                        }
                                         echo suInput('input', $arg);
                                         ?>
                                     </div>

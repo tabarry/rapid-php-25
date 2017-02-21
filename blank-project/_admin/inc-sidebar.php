@@ -19,13 +19,13 @@
                         <?php } ?>
                         <?php if ($_SESSION[SESSION_PREFIX . 'user__ID'] != '') { ?>
                             <li><a href="<?php echo ADMIN_URL; ?>" class="btn sideLinkReverse"><i class="fa fa-home"></i> Home</a></li>   
-                            <li><a href="<?php echo ADMIN_URL; ?>notes<?php echo PHP_EXTENSION;?>/" class="btn sideLink"><i class="fa fa-pencil"></i> Free Notes</a></li>
+                            <li><a href="<?php echo ADMIN_URL; ?>notes<?php echo PHP_EXTENSION; ?>/" class="btn sideLink"><i class="fa fa-pencil"></i> Free Notes</a></li>
 
 
-                            <li><a href="<?php echo ADMIN_URL; ?>settings<?php echo $tableCardLink; ?><?php echo PHP_EXTENSION;?>/" class="btn sideLink"><i class="fa fa-cogs"></i> Settings</a></li>
-                            <li><a href="<?php echo ADMIN_URL; ?>themes<?php echo PHP_EXTENSION;?>/" class="btn sideLink"><i class="fa fa-photo"></i> Themes</a></li>
-                            <li><a href="<?php echo ADMIN_URL; ?>users-update<?php echo PHP_EXTENSION;?>/" class="btn sideLink"><i class="fa fa-user"></i> Update Profile</a></li>
-                            <li><a href="<?php echo ADMIN_URL; ?>login<?php echo PHP_EXTENSION;?>/?do=logout" target="remote" class="btn sideLinkReverse"><i class="fa fa-power-off"></i> Log Out</a></li>   
+                            <li><a href="<?php echo ADMIN_URL; ?>settings<?php echo $tableCardLink; ?><?php echo PHP_EXTENSION; ?>/" class="btn sideLink"><i class="fa fa-cogs"></i> Settings</a></li>
+                            <li><a href="<?php echo ADMIN_URL; ?>themes<?php echo PHP_EXTENSION; ?>/" class="btn sideLink"><i class="fa fa-photo"></i> Themes</a></li>
+                            <li><a href="<?php echo ADMIN_URL; ?>users-update<?php echo PHP_EXTENSION; ?>/" class="btn sideLink"><i class="fa fa-user"></i> Update Profile</a></li>
+                            <li><a href="<?php echo ADMIN_URL; ?>login<?php echo PHP_EXTENSION; ?>/?do=logout" target="remote" class="btn sideLinkReverse"><i class="fa fa-power-off"></i> Log Out</a></li>   
                             <li class="divider"></li>
                         <?php } ?>
                         <?php
@@ -70,7 +70,7 @@
                                             if (stristr($fileNameShow, 'faqs')) {
                                                 $fileNameShow = 'FAQs';
                                             }
-                                            $fileLink = str_replace('.php', $tableCardLink . PHP_EXTENSION.'/', $file);
+                                            $fileLink = str_replace('.php', $tableCardLink . PHP_EXTENSION . '/', $file);
                                             ?>    
                                             <li><a href="<?php echo ADMIN_URL . $fileLink; ?>" class="btn sideLink"><i class="fa fa-minus"></i> <?php echo ucwords($fileNameShow); ?></a></li>
                                             <?php
@@ -91,7 +91,7 @@
                                 <h4>&nbsp;</h4>
 
 
-                                <li><a href="<?php echo ADMIN_URL; ?>modules<?php echo PHP_EXTENSION;?>/" class="btn sideLink"><i class="fa fa-ellipsis-h pull-right"></i></a></li>
+                                <li><a href="<?php echo ADMIN_URL; ?>modules<?php echo PHP_EXTENSION; ?>/" class="btn sideLink"><i class="fa fa-ellipsis-h pull-right"></i></a></li>
                                 <?php
                             }
                         }

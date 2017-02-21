@@ -1,5 +1,6 @@
 <?php
 
+include('../sulata/includes/config.php');
 /*
  * phpMyRest is a PHP + MySQL RESTful API, developed by Sulata iSoft - www.sulata.com.pk
  * It has been kept as simple as possible to use and supports SQL input.
@@ -11,13 +12,13 @@
 #############################################
 #############################################
 /* DATABASE CONFIGURATIONS */
-define('DB_NAME', 'r24'); //Database name
-define('DB_USER', 'root'); //Database user
-define('DB_PASSWORD', 'root'); //Database password
-define('DB_HOST', 'localhost'); //Database host, leave unchanged if in doubt
-define('DB_PORT', '3306'); //Database port, leave unchanged if in doubt
+define('DB_NAME', DB_NAME); //Database name
+define('DB_USER', DB_USER); //Database user
+define('DB_PASSWORD', DB_PASSWORD); //Database password
+define('DB_HOST', DB_HOST); //Database host, leave unchanged if in doubt
+define('DB_PORT', 3306); //Database port, leave unchanged if in doubt
 /* API KEY */
-define('API_KEY', 'uLMXrY4RWuVnWqf8LgkG4ptYXHt5vrEV'); //API Key, must be at least 32 characters
+define('API_KEY', API_KEY); //API Key, must be at least 32 characters
 #############################################
 #############################################
 
@@ -49,12 +50,7 @@ if (isset($_POST['api_key'])) {
 } else {
     $apiKey = '';
 }
-//Action
-if (isset($_POST['do'])) {
-    $do = strtolower($_POST['do']);
-} else {
-    $do = '';
-}
+
 //SQL query
 if (isset($_POST['sql'])) {
     $sql = $_POST['sql'];
@@ -62,13 +58,13 @@ if (isset($_POST['sql'])) {
     $sql = '';
 }
 
+//Action
+$do = trim($sql);
+$do = explode(' ', $do);
+$do = strtolower($do[0]);
+
 $response = array(); //Error, result, record count, message
 
-/* TEST CODE */
-//$apiKey = 'aeiou12345';
-//$do = 'select';
-//$sql = "SELECT category__ID,category__Category FROM sulata_categories";
-/* * *** */
 
 /* ERROR MESSAGES */
 define('INVALID_API_KEY', 'Invalid API Key.');

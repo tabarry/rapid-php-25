@@ -5,16 +5,24 @@ include('../sulata/includes/connection.php');
 include('../sulata/includes/get-settings.php');
 include('../sulata/includes/db-structure.php');
 checkLogin();
-$pageName = 'Update Settings';
-$pageTitle = 'Update Settings';
+
+//Check if action is duplicate
+if (suSegment(2) == 'duplicate') {
+    $do = 'add';
+    $pageName = 'Duplicate Setting';
+    $pageTitle = 'Duplicate Setting';
+} else {
+    $do = 'update';
+    $pageName = 'Update Setting';
+    $pageTitle = 'Update Setting';
+}
 $id = suSegment(1);
 $sql = "SELECT setting__ID,setting__Setting,setting__Key,setting__Value,setting__Type FROM sulata_settings WHERE setting__ID='" . $id . "' AND setting__dbState='Live'";
 $result = suQuery($sql);
-if (suNumRows($result) == 0) {
+$row = $result['result'][0];
+if ($result['num_rows'] == 0) {
     suExit(INVALID_RECORD);
 }
-$row = suFetch($result);
-suFree($result);
 ?>
 <!DOCTYPE html>
 <html>
@@ -90,8 +98,8 @@ suFree($result);
                                 <!-- Heading -->
                                 <h3 class="pull-left"><i class="fa fa-desktop purple"></i> <?php echo $pageTitle; ?></h3>
                                 <div class="pull-right">
-                                    <a href="<?php echo ADMIN_URL; ?>settings-cards<?php echo PHP_EXTENSION;?>/"><i class="fa fa-th-large"></i></a>
-                                    <a href="<?php echo ADMIN_URL; ?>settings<?php echo PHP_EXTENSION;?>/"><i class="fa fa-table"></i></a>
+                                    <a href="<?php echo ADMIN_URL; ?>settings-cards<?php echo PHP_EXTENSION; ?>/"><i class="fa fa-th-large"></i></a>
+                                    <a href="<?php echo ADMIN_URL; ?>settings<?php echo PHP_EXTENSION; ?>/"><i class="fa fa-table"></i></a>
                                 </div>
 
                                 <div class="clearfix"></div>
@@ -106,13 +114,14 @@ suFree($result);
                                     <p></p>
                                 </div>
                                 <!--SU STARTS-->
-                                <form class="form-horizontal" action="<?php echo ADMIN_SUBMIT_URL; ?>settings-remote<?php echo PHP_EXTENSION;?>/update/" accept-charset="utf-8" name="suForm" id="suForm" method="post" target="remote" >			
+                                <form class="form-horizontal" action="<?php echo ADMIN_SUBMIT_URL; ?>settings-remote<?php echo PHP_EXTENSION; ?>/<?php echo $do; ?>/" accept-charset="utf-8" name="suForm" id="suForm" method="post" target="remote" >			
                                     <div class="gallery clearfix">
                                         <div class="form-group">
                                             <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                                                 <label><?php echo $dbs_sulata_settings['setting__Setting_req']; ?>Setting:</label>
                                                 <?php
-                                                $arg = array('type' => 'text', 'name' => 'setting__Setting', 'id' => 'setting__Setting', 'autocomplete' => 'off', 'maxlength' => $dbs_sulata_settings['setting__Setting_max'], 'class' => 'form-control', 'value' => suUnstrip($row['setting__Setting']), 'readonly' => 'readonly');
+                                                $js = "return $('#setting__Key').val(doSlugify(this.value,'_'));";
+                                                $arg = array('type' => 'text', 'name' => 'setting__Setting', 'id' => 'setting__Setting', 'autocomplete' => 'off', 'maxlength' => $dbs_sulata_settings['setting__Setting_max'], 'class' => 'form-control', 'value' => suUnstrip($row['setting__Setting']), 'readonly' => 'readonly', 'onkeyup' => $js);
                                                 echo suInput('input', $arg);
                                                 ?>
                                             </div>
@@ -160,6 +169,11 @@ suFree($result);
                                         echo suInput('input', $arg);
                                         //Id field
                                         $arg = array('type' => 'hidden', 'name' => 'setting__ID', 'id' => 'setting__ID', 'value' => $id);
+                                        echo suInput('input', $arg);
+                                        //If Duplicate
+                                        if ($do == 'add') {
+                                            $arg = array('type' => 'hidden', 'name' => 'duplicate', 'id' => 'duplicate', 'value' => '1');
+                                        }
                                         echo suInput('input', $arg);
                                         ?>
                                     </div>

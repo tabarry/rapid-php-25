@@ -4,18 +4,28 @@ include('../sulata/includes/functions.php');
 include('../sulata/includes/connection.php');
 include('../sulata/includes/get-settings.php');
 include('../sulata/includes/db-structure.php');
-$pageName = 'Update Headers';
-$pageTitle = 'Update Headers';
+
 checkLogin();
 
+//Check if action is duplicate
+if (suSegment(2) == 'duplicate') {
+    $do = 'add';
+    $pageName = 'Duplicate Header';
+    $pageTitle = 'Duplicate Header';
+} else {
+    $do = 'update';
+    $pageName = 'Update Header';
+    $pageTitle = 'Update Header';
+}
 $id = suSegment(1);
+
+
 $sql = "SELECT header__ID,header__Title,header__Picture FROM sulata_headers WHERE header__ID='" . $id . "' AND header__dbState='Live'";
 $result = suQuery($sql);
-if (suNumRows($result) == 0) {
+$row = $result['result'][0];
+if ($result['num_rows'] == 0) {
     suExit(INVALID_RECORD);
 }
-$row = suFetch($result);
-suFree($result);
 ?>
 <!DOCTYPE html>
 <html>
@@ -91,8 +101,8 @@ suFree($result);
                                 <!-- Heading -->
                                 <h3 class="pull-left"><i class="fa fa-desktop purple"></i> <?php echo $pageTitle; ?></h3>
                                 <div class="pull-right">
-                                    <a href="<?php echo ADMIN_URL; ?>headers-cards<?php echo PHP_EXTENSION;?>/"><i class="fa fa-th-large"></i></a>
-                                    <a href="<?php echo ADMIN_URL; ?>headers<?php echo PHP_EXTENSION;?>/"><i class="fa fa-table"></i></a>
+                                    <a href="<?php echo ADMIN_URL; ?>headers-cards<?php echo PHP_EXTENSION; ?>/"><i class="fa fa-th-large"></i></a>
+                                    <a href="<?php echo ADMIN_URL; ?>headers<?php echo PHP_EXTENSION; ?>/"><i class="fa fa-table"></i></a>
                                 </div>
 
                                 <div class="clearfix"></div>
@@ -107,7 +117,7 @@ suFree($result);
                                     <p></p>
                                 </div>
                                 <!--SU STARTS-->
-                                <form class="form-horizontal" action="<?php echo ADMIN_SUBMIT_URL; ?>headers-remote<?php echo PHP_EXTENSION;?>/update/" accept-charset="utf-8" name="suForm" id="suForm" method="post" target="remote" enctype="multipart/form-data">			
+                                <form class="form-horizontal" action="<?php echo ADMIN_SUBMIT_URL; ?>headers-remote<?php echo PHP_EXTENSION; ?>/<?php echo $do; ?>/" accept-charset="utf-8" name="suForm" id="suForm" method="post" target="remote" enctype="multipart/form-data">			
                                     <div class="gallery clearfix">
                                         <div class="form-group">
                                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -148,6 +158,12 @@ suFree($result);
 
                                         //Id field
                                         $arg = array('type' => 'hidden', 'name' => 'header__ID', 'id' => 'header__ID', 'value' => $id);
+                                        echo suInput('input', $arg);
+
+                                        //If Duplicate
+                                        if ($do == 'add') {
+                                            $arg = array('type' => 'hidden', 'name' => 'duplicate', 'id' => 'duplicate', 'value' => '1');
+                                        }
                                         echo suInput('input', $arg);
                                         ?>
                                     </div>

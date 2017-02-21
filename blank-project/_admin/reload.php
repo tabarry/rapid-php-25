@@ -22,10 +22,10 @@ if ($_GET['type'] == 'chk') {
     $result = suQuery($sql);
     $chkArr = array();
 
-    while ($row = suFetch($result)) {
+    foreach ($result['result'] as $row) {
         array_push($chkArr, $row[$f1b]);
     }
-    suFree($result);
+
 
 //Build checkboxes
     //State field
@@ -35,7 +35,7 @@ if ($_GET['type'] == 'chk') {
     $sql = "SELECT $f1 AS f1, $f2 AS f2 FROM $tbl WHERE $stateField='Live' ORDER BY $f2";
     $result = suQuery($sql);
 
-    while ($row = suFetch($result)) {
+    foreach ($result['result'] as $row) {
         $chkUid = $row['f1'];
         if (in_array($row['f1'], $chkArr)) {
             $display = "style='display:none'";
@@ -45,7 +45,7 @@ if ($_GET['type'] == 'chk') {
         ?>
         <a <?php echo $display; ?> id="chk<?php echo $chkUid; ?>" href="javascript:;" class="underline" onclick="loadCheckbox('<?php echo $chkUid; ?>', '<?php echo addslashes(suUnstrip($row['f2'])); ?>', '<?php echo $f2; ?>')" onmouseover="toggleCheckboxClass('over', '<?php echo $chkUid; ?>');" onmouseout="toggleCheckboxClass('out', '<?php echo $chkUid; ?>');"><i id="fa<?php echo $chkUid; ?>" class="fa fa-square-o"></i> <?php echo suUnstrip($row['f2']); ?>.</a>
         <?php
-    }suFree($result);
+    }
     echo '
         </ul>
         </div>';
@@ -58,9 +58,9 @@ if ($_GET['type'] == 'chk') {
     $stateField = $stateField[0] . '__dbState';
     $sql = "SELECT $f1 AS f1, $f2 AS f2 FROM $tbl WHERE $stateField='Live' ORDER BY $f2";
     $result = suQuery($sql);
-    while ($row = suFetch($result)) {
+    foreach ($result['result'] as $row) {
         $dd.="<option value='" . $row['f1'] . "'>" . suUnstrip($row['f2']) . "</option>";
-    }suFree($result);
+    }
     echo $dd;
 }
 ?>

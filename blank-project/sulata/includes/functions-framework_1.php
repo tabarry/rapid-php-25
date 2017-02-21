@@ -445,15 +445,18 @@ if (!function_exists('checkLogin')) {
         //get multi_login settings
         $sql = "SELECT setting__Value FROM sulata_settings WHERE setting__Key='multi_login' AND setting__dbState='Live'";
         $result = suQuery($sql);
-        $row = $result['result'][0];
+        
         $multi_login = $row['setting__Value'];
+        
 
         if ($multi_login == '0') {
             //Get user IP
 
             $sql = "SELECT user__IP FROM sulata_users WHERE user__dbState='Live' AND user__ID='" . $_SESSION[SESSION_PREFIX . 'user__ID'] . "'";
             $result = suQuery($sql);
-            $user__IP = $result['result'][0]['user__IP'];
+            
+            $user__IP = $row['user__IP'];
+            
             if ($_SESSION[SESSION_PREFIX . 'user__IP'] != $user__IP) {
                 $msg = urlencode(MULTIPLE_LOGIN_ERROR_MESSAGE);
                 $url = ADMIN_URL . 'message' . PHP_EXTENSION . '/?msg=' . $msg;
@@ -735,8 +738,8 @@ if (!function_exists('suDoInsert')) {
         if ($result['errno'] > 0) {
             if ($result['errno'] == 1062) {
                 $sql2 = $selectSql;
-                $result2 = suQuery($sql2, 'insert');
-                $row2 = $result2['result'][0];
+                $result2 = suQuery($sql2);
+                $row2 = suFetch($result2);
                 $insertId = $row2[$uniqueField];
             } else {
                 suPrintJs("alert('" . MYSQL_ERROR . "')");
@@ -818,7 +821,7 @@ if (!function_exists('suSqlToCSV')) {
         $output = fopen('php://output', 'w');
         fputcsv($output, $headerArray);
         $result = suQuery($sql);
-        foreach ($result['result'] as $row) {
+        while ($row = suFetchAssoc($result)) {
             fputcsv($output, $row);
         }
     }
@@ -860,7 +863,7 @@ if (!function_exists('suSqlToPDF')) {
         $sql = "SELECT " . substr($pdfSql, 0, -1);
 
         $result = suQuery($sql);
-        foreach ($result['result'] as $row) {
+        while ($row = suFetchAssoc($result)) {
             $sr = $sr + 1;
             $td .= "<tr><td style=\"text-align:left;padding:5px;border-bottom:1px solid #333;\">" . $sr . ". </td>";
             for ($i = 0; $i <= sizeof($fieldsArray) - 1; $i++) {

@@ -10,11 +10,10 @@ $id = $_SESSION[SESSION_PREFIX . 'user__ID'];
 
 $sql = "SELECT user__ID,user__Name,user__Phone,user__Email,user__Password,user__Status,user__Picture,user__Type,user__Notes FROM sulata_users WHERE user__dbState='Live' AND user__ID='" . $id . "'";
 $result = suQuery($sql);
-if (suNumRows($result) == 0) {
+$row = $result['result'][0];
+if ($result['num_rows'] == 0) {
     suExit(INVALID_RECORD);
 }
-$row = suFetch($result);
-suFree($result);
 
 $pageName = 'Update Notes';
 $pageTitle = 'Update Notes';
@@ -106,7 +105,7 @@ $pageTitle = 'Update Notes';
                                 </div>
                                 <!--SU STARTS-->
 
-                                <form class="form-horizontal" action="<?php echo ADMIN_URL; ?>notes-remote<?php echo PHP_EXTENSION;?>.php/update/" accept-charset="utf-8" name="suForm" id="suForm" method="post" target="remote" >
+                                <form class="form-horizontal" action="<?php echo ADMIN_URL; ?>notes-remote<?php echo PHP_EXTENSION; ?>.php/update/" accept-charset="utf-8" name="suForm" id="suForm" method="post" target="remote" >
                                     <link rel=\"stylesheet\" href=\"<?php echo BASE_URL; ?>sulata/themes/redmond/jquery-ui.css\">
 
                                     <div class="gallery clearfix">

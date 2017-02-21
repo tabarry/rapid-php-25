@@ -1,52 +1,45 @@
-//make two cols equal
-function suEqualCols(col1, col2) {
-    return false;
-    if ($("#" + col1)) {
-        col1Height = $("#" + col1).height();
-        c1h = col1Height + "px";
 
-    }
-    if ($("#" + col2)) {
-        col2Height = $("#" + col2).height();
-        c2h = col2Height + "px";
-    }
-    if (col1Height > col2Height) {
-        $("#" + col2).height(c1h);
-    } else {
-        $("#" + col1).height(c2h);
-    }
-    //to enable this function, remove or comment the 'return false;' line below
-    return false;
-    var ua = navigator.userAgent.toLowerCase();
-    //Check if not mobile
-    if (!((ua.search("ios") > -1) || (ua.search("ipad") > -1) || (ua.search("ipod") > -1) || (ua.search("iphone") > -1) || (ua.search("android") > -1) || (ua.search("blackberry") > -1) || (ua.search("nokia") > -1))) {
-
-        if ($("#" + col1)) {
-            col1Height = $("#" + col1).height();
-            c1h = col1Height + "px";
-
-        }
-        if ($("#" + col2)) {
-            col2Height = $("#" + col2).height();
-            c2h = col2Height + "px";
-        }
-        if (col1Height > col2Height) {
-            $("#" + col2).height(c1h);
-        } else {
-            $("#" + col1).height(c2h);
-        }
-
-    }
-}
 //Keep session live
 function suStayAlive(url) {
     $.post(url);
 }
-//Reset all form
-function suReset() {
-    for (i = 0; i <= document.forms.length - 1; i++) {
-        if (document.forms[i]) {
-            document.forms[i].reset();
+
+//Reset form
+function suReset(frmName) {
+
+
+    var elements = document.getElementById(frmName).elements;
+
+
+
+    for (i = 0; i < elements.length; i++) {
+
+        field_type = elements[i].type.toLowerCase();
+
+        switch (field_type) {
+
+            case "text":
+            case "password":
+            case "textarea":
+            case "hidden":
+
+                elements[i].value = "";
+                break;
+
+            case "radio":
+            case "checkbox":
+                if (elements[i].checked) {
+                    elements[i].checked = false;
+                }
+                break;
+
+            case "select-one":
+            case "select-multi":
+                elements[i].selectedIndex = 0;
+                break;
+
+            default:
+                break;
         }
     }
 }
@@ -108,18 +101,7 @@ function suSearchCombo(searchBox, searchCombo) {
     }
 }
 
-//Delete row and confirm
-function delRecord(arg, warning) {
-    c = confirm(warning);
-    if (c == false) {
-        return false;
 
-    } else {
-        //alert 
-        $(arg).parent().parent().remove();
-        return true;
-    }
-}
 //Delete row and confirm
 function delById(id, warning) {
     c = confirm(warning);
@@ -127,10 +109,74 @@ function delById(id, warning) {
         return false;
 
     } else {
-        //alert 
-        $('#'+id).remove();
+        if ($('#' + id + '_del')) {
+            $('#' + id + '_del').hide();
+        }
+        if ($('#' + id + '_edit')) {
+            $('#' + id + '_edit').hide();
+        }
+        if ($('#' + id + '_duplicate')) {
+            $('#' + id + '_duplicate').hide();
+        }
+        if ($('#' + id + '_restore')) {
+            $('#' + id + '_restore').show();
+        }
+        if ($('#' + id + ' header')) {
+            $('#' + id + ' header').addClass('strike-through');
+        }
+        if ($('#' + id + ' h1')) {
+            $('#' + id + ' h1').addClass('strike-through');
+        }
+        if ($('#' + id + ' p')) {
+            $('#' + id + ' p').addClass('strike-through');
+        }
+        if ($('#' + id + ' label')) {
+            $('#' + id + ' label').addClass('strike-through');
+        }
+        if ($('#' + id + ' .card')) {
+            $('#' + id + ' .card').addClass('deleted-bg');
+            $('#' + id + ' .card').addClass('red-border');
+        }
+        if ($('#' + id + ' td')) {
+            $('#' + id + ' td').addClass('strike-through');
+            $('#' + id + ' td').addClass('deleted-bg');
+        }
+
         return true;
     }
+}
+//Restore row and confirm
+function restoreById(id) {
+    if ($('#' + id + '_del')) {
+        $('#' + id + '_del').show();
+    }
+    if ($('#' + id + '_edit')) {
+        $('#' + id + '_edit').show();
+    }
+    if ($('#' + id + '_duplicate')) {
+        $('#' + id + '_duplicate').show();
+    }
+    if ($('#' + id + '_restore')) {
+        $('#' + id + '_restore').hide();
+    }
+    if ($('#' + id + ' h1')) {
+        $('#' + id + ' h1').removeClass('strike-through');
+    }
+    if ($('#' + id + ' p')) {
+        $('#' + id + ' p').removeClass('strike-through');
+    }
+    if ($('#' + id + ' label')) {
+        $('#' + id + ' label').removeClass('strike-through');
+    }
+    if ($('#' + id + ' .card')) {
+        $('#' + id + ' .card').removeClass('deleted-bg');
+        $('#' + id + ' .card').removeClass('red-border');
+    }
+    if ($('#' + id + ' td')) {
+        $('#' + id + ' td').removeClass('strike-through');
+        $('#' + id + ' td').removeClass('deleted-bg');
+    }
+
 }
 //Checkbox Area
 function loadCheckbox(id, txt, fld) {
@@ -217,12 +263,12 @@ function doStrongPassword(passwordEle, outputEle) {
     outputHidden.val(passed);
 }
 //Slugify text
-function doSlugify(text)
+function doSlugify(text, spaceCharacter)
 {
-  return text.toString().toLowerCase()
-    .replace(/\s+/g, '-')           // Replace spaces with -
-    .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
-    .replace(/\-\-+/g, '-')         // Replace multiple - with single -
-    .replace(/^-+/, '')             // Trim - from start of text
-    .replace(/-+$/, '');            // Trim - from end of text
+    return text.toString().toLowerCase()
+            .replace(/\s+/g, spaceCharacter)           // Replace spaces with -
+            .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
+            .replace(/\-\-+/g, spaceCharacter)         // Replace multiple - with single -
+            .replace(/^-+/, '')             // Trim - from start of text
+            .replace(/-+$/, '');            // Trim - from end of text
 }

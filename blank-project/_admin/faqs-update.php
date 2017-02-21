@@ -4,18 +4,29 @@ include('../sulata/includes/functions.php');
 include('../sulata/includes/connection.php');
 include('../sulata/includes/get-settings.php');
 include('../sulata/includes/db-structure.php');
-$pageName = 'Update FAQs';
-$pageTitle = 'Update FAQs';
+
 checkLogin();
 
+//Check if action is duplicate
+if (suSegment(2) == 'duplicate') {
+    $do = 'add';
+    $pageName = 'Duplicate FAQ';
+    $pageTitle = 'Duplicate FAQ';
+} else {
+    $do = 'update';
+    $pageName = 'Update FAQ';
+    $pageTitle = 'Update FAQ';
+}
+
 $id = suSegment(1);
+
+
 $sql = "SELECT faq__ID,faq__Question,faq__Answer,faq__Sequence,faq__Status FROM sulata_faqs WHERE faq__ID='" . $id . "' AND faq__dbState='Live'";
 $result = suQuery($sql);
-if (suNumRows($result) == 0) {
+$row = $result['result'][0];
+if ($result['num_rows'] == 0) {
     suExit(INVALID_RECORD);
 }
-$row = suFetch($result);
-suFree($result);
 ?>
 <!DOCTYPE html>
 <html>
@@ -91,8 +102,8 @@ suFree($result);
                                 <!-- Heading -->
                                 <h3 class="pull-left"><i class="fa fa-desktop purple"></i> <?php echo $pageTitle; ?></h3>
                                 <div class="pull-right">
-                                    <a href="<?php echo ADMIN_URL; ?>faqs-cards<?php echo PHP_EXTENSION;?>/"><i class="fa fa-th-large"></i></a>
-                                    <a href="<?php echo ADMIN_URL; ?>faqs<?php echo PHP_EXTENSION;?>/"><i class="fa fa-table"></i></a>
+                                    <a href="<?php echo ADMIN_URL; ?>faqs-cards<?php echo PHP_EXTENSION; ?>/"><i class="fa fa-th-large"></i></a>
+                                    <a href="<?php echo ADMIN_URL; ?>faqs<?php echo PHP_EXTENSION; ?>/"><i class="fa fa-table"></i></a>
                                 </div>
 
                                 <div class="clearfix"></div>
@@ -109,7 +120,7 @@ suFree($result);
                                 <!--SU STARTS-->
 
 
-                                <form class="form-horizontal" action="<?php echo ADMIN_SUBMIT_URL; ?>faqs-remote<?php echo PHP_EXTENSION;?>/update/" accept-charset="utf-8" name="suForm" id="suForm" method="post" target="remote" >			
+                                <form class="form-horizontal" action="<?php echo ADMIN_SUBMIT_URL; ?>faqs-remote<?php echo PHP_EXTENSION; ?>/<?php echo $do; ?>/" accept-charset="utf-8" name="suForm" id="suForm" method="post" target="remote" >			
                                     <div class="gallery clearfix">
                                         <div class="form-group">
                                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -162,6 +173,12 @@ suFree($result);
                                         echo suInput('input', $arg);
                                         //Id field
                                         $arg = array('type' => 'hidden', 'name' => 'faq__ID', 'id' => 'faq__ID', 'value' => $id);
+                                        echo suInput('input', $arg);
+
+//If Duplicate
+                                        if ($do == 'add') {
+                                            $arg = array('type' => 'hidden', 'name' => 'duplicate', 'id' => 'duplicate', 'value' => '1');
+                                        }
                                         echo suInput('input', $arg);
                                         ?>
                                     </div>

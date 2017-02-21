@@ -7,8 +7,8 @@ include('../sulata/includes/db-structure.php');
 
 checkLogin();
 $id = suSegment(1);
-if ($id == $_SESSION[SESSION_PREFIX . 'user__ID']) {
-    suRedirect(ADMIN_URL . 'users-update<?php echo PHP_EXTENSION;?>/');
+if ($id == $_SESSION[SESSION_PREFIX . 'user__ID'] && suSegment(2) == '') {
+    suRedirect(ADMIN_URL . 'users-update' . PHP_EXTENSION . '/');
 }
 //Conditions for update profile
 if ($id == '') {
@@ -16,17 +16,29 @@ if ($id == '') {
     $pageName = 'Update Profile';
     $pageTitle = 'Update Profile';
     $id = $_SESSION[SESSION_PREFIX . 'user__ID'];
+    $do = 'update';
 } else {
-    $pageName = 'Update Users';
-    $pageTitle = 'Update Users';
+    //Check if action is duplicate
+    if (suSegment(2) == 'duplicate') {
+        $do = 'add';
+        $pageName = 'Duplicate User';
+        $pageTitle = 'Duplicate User';
+    } else {
+        $do = 'update';
+        $pageName = 'Update User';
+        $pageTitle = 'Update User';
+    }
 }
+
+
+
+
 $sql = "SELECT user__ID,user__Name,user__Phone,user__Email,user__Password,user__Status,user__Picture FROM sulata_users WHERE user__ID='" . $id . "' AND user__dbState='Live'";
 $result = suQuery($sql);
-if (suNumRows($result) == 0) {
+$row = $result['result'][0];
+if ($result['num_rows'] == 0) {
     suExit(INVALID_RECORD);
 }
-$row = suFetch($result);
-suFree($result);
 ?>
 <!DOCTYPE html>
 <html>
@@ -102,8 +114,8 @@ suFree($result);
                                 <!-- Heading -->
                                 <h3 class="pull-left"><i class="fa fa-desktop purple"></i> <?php echo $pageTitle; ?></h3>
                                 <div class="pull-right">
-                                    <a href="<?php echo ADMIN_URL; ?>users-cards<?php echo PHP_EXTENSION;?>/"><i class="fa fa-th-large"></i></a>
-                                    <a href="<?php echo ADMIN_URL; ?>users<?php echo PHP_EXTENSION;?>/"><i class="fa fa-table"></i></a>
+                                    <a href="<?php echo ADMIN_URL; ?>users-cards<?php echo PHP_EXTENSION; ?>/"><i class="fa fa-th-large"></i></a>
+                                    <a href="<?php echo ADMIN_URL; ?>users<?php echo PHP_EXTENSION; ?>/"><i class="fa fa-table"></i></a>
                                 </div>
 
                                 <div class="clearfix"></div>
@@ -128,7 +140,7 @@ suFree($result);
 
                                 <div class="imgThumb" style="background-image:url(<?php echo $userImage; ?>);"></div>
 
-                                <form class="form-horizontal" action="<?php echo ADMIN_SUBMIT_URL; ?>users-remote<?php echo PHP_EXTENSION;?>/update/" accept-charset="utf-8" name="suForm" id="suForm" method="post" target="remote" enctype="multipart/form-data">
+                                <form class="form-horizontal" action="<?php echo ADMIN_SUBMIT_URL; ?>users-remote<?php echo PHP_EXTENSION; ?>/<?php echo $do; ?>/" accept-charset="utf-8" name="suForm" id="suForm" method="post" target="remote" enctype="multipart/form-data">
 
                                     <div class="gallery clearfix">
 
@@ -222,11 +234,17 @@ suFree($result);
                                     </p>
                                     <div class="lineSpacer clear"></div>
                                     <?php
-                                    //Referrer field
+//Referrer field
                                     $arg = array('type' => 'hidden', 'name' => 'referrer', 'id' => 'referrer', 'value' => $_SERVER['HTTP_REFERER']);
                                     echo suInput('input', $arg);
-                                    //Id field
+//Id field
                                     $arg = array('type' => 'hidden', 'name' => 'user__ID', 'id' => 'user__ID', 'value' => $id);
+                                    echo suInput('input', $arg);
+
+//If Duplicate
+                                    if ($do == 'add') {
+                                        $arg = array('type' => 'hidden', 'name' => 'duplicate', 'id' => 'duplicate', 'value' => '1');
+                                    }
                                     echo suInput('input', $arg);
                                     ?>
                                 </form>

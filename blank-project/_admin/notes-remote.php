@@ -41,10 +41,10 @@ if ($do == "update") {
     $extraSql = '';
 
     $sql = "UPDATE sulata_users SET user__Notes='" . suStrip($_POST['user__Notes']) . "' WHERE user__ID='" . $_SESSION[SESSION_PREFIX . 'user__ID'] . "'";
-    suQuery($sql, FALSE);
+    suQuery($sql, 'update');
 
-    if (suErrorNo() > 0) {
-        if (suErrorNo() == 1062) {
+    if ($result['errno'] > 0) {
+        if ($result['errno'] == 1062) {
             $error = sprintf(DUPLICATION_ERROR, 'Email');
         } else {
             $error = MYSQL_ERROR;

@@ -40,10 +40,10 @@ if ($do == "add") {
     $sql = "INSERT INTO sulata_faqs SET faq__Question='" . suStrip($_POST['faq__Question']) . "',faq__Answer='" . suStrip($_POST['faq__Answer']) . "',faq__Sequence='" . suStrip($_POST['faq__Sequence']) . "',faq__Status='" . suStrip($_POST['faq__Status']) . "'
 ,faq__Last_Action_On ='" . date('Y-m-d H:i:s') . "',faq__Last_Action_By='" . $_SESSION[SESSION_PREFIX . 'user__Name'] . "'        
 " . $extraSql;
-    suQuery($sql, FALSE);
+    $result = suQuery($sql);
 
-    if (suErrorNo() > 0) {
-        if (suErrorNo() == 1062) {
+    if ($result['errno'] > 0) {
+        if ($result['errno'] == 1062) {
             $error = sprintf(DUPLICATION_ERROR, 'Question');
         } else {
             $error = MYSQL_ERROR;
@@ -57,19 +57,26 @@ if ($do == "add") {
             parent.$("html, body").animate({ scrollTop: parent.$("html").offset().top }, "slow");
         ');
     } else {
-        $max_id = suInsertId();
+        $max_id = $result['insert_id'];
         //Upload files
 
-
         /* POST INSERT PLACE */
-
+        if ($_POST['referrer'] == '') {
+            $_POST['referrer'] = ADMIN_URL . 'faqs-cards' . PHP_EXTENSION . '/';
+        }
+        if ($_POST['duplicate'] == 1) {
+            $doJs = "parent.suReset(\"suForm\");parent.window.location.href='" . $_POST['referrer'] . "';
+";
+        } else {
+            $doJs = 'parent.suForm.reset();';
+        }
         suPrintJs('
             parent.suToggleButton(0);
             parent.$("#error-area").hide();
             parent.$("#message-area").show();
             parent.$("#message-area").html("' . SUCCESS_MESSAGE . '");
             parent.$("html, body").animate({ scrollTop: parent.$("html").offset().top }, "slow");
-            parent.suForm.reset();
+            ' . $doJs . '
         ');
     }
 }
@@ -95,10 +102,10 @@ if ($do == "update") {
     $sql = "UPDATE sulata_faqs SET faq__Question='" . suStrip($_POST['faq__Question']) . "',faq__Answer='" . suStrip($_POST['faq__Answer']) . "',faq__Sequence='" . suStrip($_POST['faq__Sequence']) . "',faq__Status='" . suStrip($_POST['faq__Status']) . "'
 ,faq__Last_Action_On ='" . date('Y-m-d H:i:s') . "',faq__Last_Action_By='" . $_SESSION[SESSION_PREFIX . 'user__Name'] . "'        
 " . $extraSql . " WHERE faq__ID='" . $_POST['faq__ID'] . "'";
-    suQuery($sql, FALSE);
+    $result = suQuery($sql);
 
-    if (suErrorNo() > 0) {
-        if (suErrorNo() == 1062) {
+    if ($result['errno'] > 0) {
+        if ($result['errno'] == 1062) {
             $error = sprintf(DUPLICATION_ERROR, 'Question');
         } else {
             $error = MYSQL_ERROR;
@@ -135,5 +142,42 @@ if ($do == "delete") {
     $uid = uniqid() . '-';
     $sql = "UPDATE sulata_faqs SET faq__Question=CONCAT('" . $uid . "',faq__Question), faq__Last_Action_On ='" . date('Y-m-d H:i:s') . "',faq__Last_Action_By='" . $_SESSION[SESSION_PREFIX . 'user__Name'] . "', faq__dbState='Deleted' WHERE faq__ID = '" . $id . "'";
     $result = suQuery($sql);
+    suPrintJs('
+        parent.$("#error-area").hide();
+        parent.$("#message-area").hide();
+        ');
+}
+//Restore record
+if ($do == "restore") {
+//Check referrer
+    suCheckRef();
+    $id = suSegment(2);
+//Delete from database by updating just the state
+    //make a unique id attach to previous unique field
+    $uid = uniqid() . '-';
+    $sql = "UPDATE sulata_faqs SET faq__Question=SUBSTR(faq__Question," . (UID_LENGTH + 1) . "), faq__Last_Action_On ='" . date('Y-m-d H:i:s') . "',faq__Last_Action_By='" . $_SESSION[SESSION_PREFIX . 'user__Name'] . "', faq__dbState='Live' WHERE faq__ID = '" . $id . "'";
+    $result = suQuery($sql);
+    if ($result['errno'] > 0) {
+        if ($result['errno'] == 1062) {
+            $error = sprintf(DUPLICATION_ERROR_ON_UPDATE, 'Question');
+        } else {
+            $error = MYSQL_ERROR;
+        }
+
+        suPrintJs('
+            parent.$("#message-area").hide();
+            parent.$("#error-area").show();
+            parent.$("#error-area").html("<ul><li>' . $error . '</li></ul>");
+            parent.$("html, body").animate({ scrollTop: parent.$("html").offset().top }, "slow");
+        ');
+    } else {
+        suPrintJs('
+            parent.restoreById("card_' . $id . '");
+            parent.$("#error-area").hide();
+            parent.$("#message-area").show();
+            parent.$("#message-area").html("' . RECORD_RESTORED . '");
+            parent.$("html, body").animate({ scrollTop: parent.$("html").offset().top }, "slow");
+        ');
+    }
 }
 ?>

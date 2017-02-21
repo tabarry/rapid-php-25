@@ -85,7 +85,7 @@ form{
 form *{
     box-shadow:none !important;
 }
-
+form search,
 form input,
 form textarea,
 form select{
@@ -326,6 +326,18 @@ form label{
 .card header a:hover{
     color:#15AA9A;
 }
+.strike-through{
+    text-decoration: line-through;
+    color:#CCC !important;
+
+}
+.deleted-bg{
+    background-color:#EEE;
+}
+.red-border{
+    border:1px solid #FBBBCB;
+}
+
 
 /* Pagination */
 

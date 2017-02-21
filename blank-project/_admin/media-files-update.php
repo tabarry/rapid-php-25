@@ -4,18 +4,29 @@ include('../sulata/includes/functions.php');
 include('../sulata/includes/connection.php');
 include('../sulata/includes/get-settings.php');
 include('../sulata/includes/db-structure.php');
-$pageName = 'Update Media Files';
-$pageTitle = 'Update Media Files';
+
 checkLogin();
 
+//Check if action is duplicate
+if (suSegment(2) == 'duplicate') {
+    $do = 'add';
+    $pageName = 'Duplicate Media File';
+    $pageTitle = 'Duplicate Media File';
+} else {
+    $do = 'update';
+    $pageName = 'Update Media File';
+    $pageTitle = 'Update Media File';
+}
+
 $id = suSegment(1);
+
+
 $sql = "SELECT mediafile__ID,mediafile__Category,mediafile__Title,mediafile__File,mediafile__Short_Description,mediafile__Long_Description,mediafile__Sequence,mediafile__Date FROM sulata_media_files WHERE mediafile__ID='" . $id . "' AND mediafile__dbState='Live'";
 $result = suQuery($sql);
-if (suNumRows($result) == 0) {
+$row = $result['result'][0];
+if ($result['num_rows'] == 0) {
     suExit(INVALID_RECORD);
 }
-$row = suFetch($result);
-suFree($result);
 ?>
 <!DOCTYPE html>
 <html>
@@ -91,8 +102,8 @@ suFree($result);
                                 <!-- Heading -->
                                 <h3 class="pull-left"><i class="fa fa-desktop purple"></i> <?php echo $pageTitle; ?></h3>
                                 <div class="pull-right">
-                                    <a href="<?php echo ADMIN_URL; ?>media-files-cards<?php echo PHP_EXTENSION;?>/"><i class="fa fa-th-large"></i></a>
-                                    <a href="<?php echo ADMIN_URL; ?>media-files<?php echo PHP_EXTENSION;?>/"><i class="fa fa-table"></i></a>
+                                    <a href="<?php echo ADMIN_URL; ?>media-files-cards<?php echo PHP_EXTENSION; ?>/"><i class="fa fa-th-large"></i></a>
+                                    <a href="<?php echo ADMIN_URL; ?>media-files<?php echo PHP_EXTENSION; ?>/"><i class="fa fa-table"></i></a>
                                 </div>
 
                                 <div class="clearfix"></div>
@@ -107,13 +118,13 @@ suFree($result);
                                     <p></p>
                                 </div>
                                 <!--SU STARTS-->
-                                <form class="form-horizontal" action="<?php echo ADMIN_SUBMIT_URL; ?>media-files-remote<?php echo PHP_EXTENSION;?>/update/" accept-charset="utf-8" name="suForm" id="suForm" method="post" target="remote" enctype="multipart/form-data">			
+                                <form class="form-horizontal" action="<?php echo ADMIN_SUBMIT_URL; ?>media-files-remote<?php echo PHP_EXTENSION; ?>/<?php echo $do; ?>/" accept-charset="utf-8" name="suForm" id="suForm" method="post" target="remote" enctype="multipart/form-data">			
                                     <div class="gallery clearfix">
                                         <div class="form-group">
                                             <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                                                 <label><?php echo $dbs_sulata_media_files['mediafile__Category_req']; ?>Category:
                                                     <?php if ($addAccess == 'true') { ?>    
-                                                        <a title="Add new record.." rel="prettyPhoto[iframes]" href="<?php echo ADMIN_URL; ?>media-categories-add<?php echo PHP_EXTENSION;?>/?overlay=yes&iframe=true&width=50%&height=100%"><img border='0' src='<?php echo BASE_URL; ?>sulata/images/add-icon.png'/></a>
+                                                        <a title="Add new record.." rel="prettyPhoto[iframes]" href="<?php echo ADMIN_URL; ?>media-categories-add<?php echo PHP_EXTENSION; ?>/?overlay=yes&iframe=true&width=50%&height=100%"><img border='0' src='<?php echo BASE_URL; ?>sulata/images/add-icon.png'/></a>
 
                                                         <a onclick="suReload('mediafile__Category', '<?php echo ADMIN_URL; ?>', '<?php echo suCrypt('sulata_media_categories'); ?>', '<?php echo suCrypt('mediacat__ID'); ?>', '<?php echo suCrypt('mediacat__Name'); ?>');" href="javascript:;"><img border='0' src='<?php echo BASE_URL; ?>sulata/images/reload-icon.png'/></a>    
                                                     <?php } ?>    
@@ -216,6 +227,12 @@ suFree($result);
 
                                         //Id field
                                         $arg = array('type' => 'hidden', 'name' => 'mediafile__ID', 'id' => 'mediafile__ID', 'value' => $id);
+                                        echo suInput('input', $arg);
+
+                                        //If Duplicate
+                                        if ($do == 'add') {
+                                            $arg = array('type' => 'hidden', 'name' => 'duplicate', 'id' => 'duplicate', 'value' => '1');
+                                        }
                                         echo suInput('input', $arg);
                                         ?>
                                     </div>

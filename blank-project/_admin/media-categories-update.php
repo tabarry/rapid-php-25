@@ -4,18 +4,29 @@ include('../sulata/includes/functions.php');
 include('../sulata/includes/connection.php');
 include('../sulata/includes/get-settings.php');
 include('../sulata/includes/db-structure.php');
-$pageName = 'Update Media Categories';
-$pageTitle = 'Update Media Categories';
+
 checkLogin();
 
+//Check if action is duplicate
+if (suSegment(2) == 'duplicate') {
+    $do = 'add';
+    $pageName = 'Duplicate Media Category';
+    $pageTitle = 'Duplicate Media Category';
+} else {
+    $do = 'update';
+    $pageName = 'Update Media Category';
+    $pageTitle = 'Update Media Category';
+}
+
+
 $id = suSegment(1);
+
 $sql = "SELECT mediacat__ID,mediacat__Name,mediacat__Picture,mediacat__Description,mediacat__Type,mediacat__Thumbnail_Width,mediacat__Thumbnail_Height,mediacat__Image_Width,mediacat__Image_Height,mediacat__Sequence FROM sulata_media_categories WHERE mediacat__ID='" . $id . "' AND mediacat__dbState='Live'";
 $result = suQuery($sql);
-if (suNumRows($result) == 0) {
+$row = $result['result'][0];
+if ($result['num_rows'] == 0) {
     suExit(INVALID_RECORD);
 }
-$row = suFetch($result);
-suFree($result);
 ?>
 <!DOCTYPE html>
 <html>
@@ -91,8 +102,8 @@ suFree($result);
                                 <!-- Heading -->
                                 <h3 class="pull-left"><i class="fa fa-desktop purple"></i> <?php echo $pageTitle; ?></h3>
                                 <div class="pull-right">
-                                    <a href="<?php echo ADMIN_URL; ?>media-categories-cards<?php echo PHP_EXTENSION;?>/"><i class="fa fa-th-large"></i></a>
-                                    <a href="<?php echo ADMIN_URL; ?>media-categories<?php echo PHP_EXTENSION;?>/"><i class="fa fa-table"></i></a>
+                                    <a href="<?php echo ADMIN_URL; ?>media-categories-cards<?php echo PHP_EXTENSION; ?>/"><i class="fa fa-th-large"></i></a>
+                                    <a href="<?php echo ADMIN_URL; ?>media-categories<?php echo PHP_EXTENSION; ?>/"><i class="fa fa-table"></i></a>
                                 </div>
 
                                 <div class="clearfix"></div>
@@ -107,7 +118,7 @@ suFree($result);
                                     <p></p>
                                 </div>
                                 <!--SU STARTS-->
-                                <form class="form-horizontal" action="<?php echo ADMIN_SUBMIT_URL; ?>media-categories-remote<?php echo PHP_EXTENSION;?>/update/" accept-charset="utf-8" name="suForm" id="suForm" method="post" target="remote" enctype="multipart/form-data">			
+                                <form class="form-horizontal" action="<?php echo ADMIN_SUBMIT_URL; ?>media-categories-remote<?php echo PHP_EXTENSION; ?>/<?php echo $do; ?>/" accept-charset="utf-8" name="suForm" id="suForm" method="post" target="remote" enctype="multipart/form-data">			
                                     <div class="gallery clearfix">
                                         <div class="form-group">
                                             <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
@@ -218,12 +229,18 @@ suFree($result);
                                         </p>
                                     </div>
                                     <?php
-                                    //Referrer field
+//Referrer field
                                     $arg = array('type' => 'hidden', 'name' => 'referrer', 'id' => 'referrer', 'value' => $_SERVER['HTTP_REFERER']);
                                     echo suInput('input', $arg);
 
-                                    //Id field
+//Id field
                                     $arg = array('type' => 'hidden', 'name' => 'mediacat__ID', 'id' => 'mediacat__ID', 'value' => $id);
+                                    echo suInput('input', $arg);
+
+//If Duplicate
+                                    if ($do == 'add') {
+                                        $arg = array('type' => 'hidden', 'name' => 'duplicate', 'id' => 'duplicate', 'value' => '1');
+                                    }
                                     echo suInput('input', $arg);
                                     ?>
                                 </form>

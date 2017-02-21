@@ -6,12 +6,18 @@
 //Start session
 session_start();
 
+
 if ($_SESSION[SESSION_PREFIX . 'getSettings'] == '') {
+
     $sql = "SELECT setting__Key, setting__Value FROM sulata_settings WHERE setting__dbState='Live' ORDER by setting__Key";
     $result = suQuery($sql);
-    while ($row = suFetch($result)) {
-        $_SESSION[SESSION_PREFIX . 'getSettings'][suUnstrip($row['setting__Key'])] = suUnstrip($row['setting__Value']);
-    }suFree($result);
+    if ($result['connect_errno'] == 0 && $result['errno'] == 0) {
+        foreach ($result['result'] as $row) {
+            $_SESSION[SESSION_PREFIX . 'getSettings'][suUnstrip($row['setting__Key'])] = suUnstrip($row['setting__Value']);
+        }
+    } else {
+        suExit(GENERIC_ERROR);
+    }
 }
 //Pass array the getSettings session value;
 $getSettings = array();
@@ -36,7 +42,6 @@ $defaultHeight = '480';
 
 //Default database ids not to be deleted
 $pageId = 1; //CMS page id
-
 //Table view or card view
 if ($getSettings['table_or_card'] == 'card') {
     $tableCardLink = '-cards';

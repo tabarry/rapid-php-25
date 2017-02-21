@@ -177,10 +177,13 @@ function recurse_copy($src, $dst, $directory, $db, $db_user, $db_password) {
                 recurse_copy($src . '/' . $file, $dst . '/' . $file, $directory, $db, $db_user, $db_password);
             } else {
                 if ($file == 'config.php') {
+                    $apiKey = substr('x' . uniqid() . uniqid() . uniqid(), 0, 32);
+                    $apiKey = str_replace('a','_',$apiKey);
                     $content = file_get_contents($src . '/' . $file);
                     $content = str_replace("#DB_NAME#", $db, $content);
                     $content = str_replace("#DB_USER#", $db_user, $content);
                     $content = str_replace("#DB_PASSWORD#", $db_password, $content);
+                    $content = str_replace("#API_KEY#", $apiKey, $content);
                     $content = str_replace("#SITE_FOLDER#", $directory, $content);
                     //Generate session prefix
                     $uid = uniqid();

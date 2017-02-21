@@ -13,8 +13,8 @@ $sql = "SELECT user__ID, user__Name, user__Email, user__Picture,user__Status,use
 
 $result = suQuery($sql);
 if (suNumRows($result) == 1) {
-    $row = suFetch($result);
-    suFree($result);
+    
+    
 //Set sessions
     $_SESSION[SESSION_PREFIX . 'user__ID'] = $row['user__ID'];
     $_SESSION[SESSION_PREFIX . 'user__Name'] = suUnstrip($row['user__Name']);
