@@ -6,12 +6,31 @@
  * For framework version, please refer to the config.php file.
  */
 
+/* CSRF token */
+if (!function_exists('suCsrfToken')) {
+
+    function suCsrfToken() {
+        $csrfToken = SESSION_PREFIX . session_id();
+        if (function_exists('sha1')) {
+            $csrfToken = sha1($csrfToken);
+        } elseif (function_exists('md5')) {
+            $csrfToken = md5($csrfToken);
+        }
+        return $csrfToken;
+    }
+
+}
 
 /* check referrer */
 if (!function_exists('suCheckRef')) {
 
     function suCheckRef() {
-        if (!stristr($_SERVER['HTTP_REFERER'], BASE_URL)) {
+        //Build host names
+        $thisHost = strtolower($_SERVER['HTTP_HOST']);
+        $referrerHost = parse_url($_SERVER['HTTP_REFERER']);
+        $referrerHost = strtolower($referrerHost['host']);
+        //Check host names
+        if ($thisHost != $referrerHost) {
             suExit(INVALID_ACCESS);
         }
     }
