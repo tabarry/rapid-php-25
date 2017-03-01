@@ -5,7 +5,7 @@ include('../sulata/includes/config.php');
  * phpMyRest is a PHP + MySQL RESTful API, developed by Sulata iSoft - www.sulata.com.pk
  * It has been kept as simple as possible to use and supports SQL input.
  * The only thing you need to change in the script is database configurations and API Key below.
- * The variables used are $_POST['do'],$_POST['sql'], $_POST['api_key'], $_POST['debug']
+ * The variables used are $_POST['sql'], $_POST['api_key'], $_POST['debug']
  * Creating date: January 19, 2016
  */
 
@@ -58,13 +58,14 @@ if (isset($_POST['sql'])) {
     $sql = '';
 }
 
-//Action
+//Build action: select, insert, update or delete
 $do = trim($sql);
 $do = explode(' ', $do);
 $do = strtolower($do[0]);
 
 $response = array(); //Error, result, record count, message
-
+$response['connect_error'] = 0;
+$response['errno'] = 0;
 
 /* ERROR MESSAGES */
 define('INVALID_API_KEY', 'Invalid API Key.');
@@ -74,6 +75,7 @@ define('INVALID_API_KEY_LENGTH', 'The API Key must be at least 32 characters.');
 if (strlen(API_KEY) < 32) {
     exit(INVALID_API_KEY_LENGTH);
 }
+
 
 if (!isset($apiKey) || ($apiKey != API_KEY)) {
     exit(INVALID_API_KEY);
@@ -110,9 +112,9 @@ if (!isset($apiKey) || ($apiKey != API_KEY)) {
         }
 
         @mysqli_free_result($result);
-    }
-    /* INSERT CODE */
-    if ($do == 'insert') {
+
+        /* INSERT CODE */
+    } elseif ($do == 'insert') {
         @mysqli_query($cn, $sql);
         if ($debug == TRUE) {
             $response['error'] = @mysqli_error($cn);
@@ -126,9 +128,9 @@ if (!isset($apiKey) || ($apiKey != API_KEY)) {
         }
         //Get insert ID
         $response['insert_id'] = @mysqli_insert_id($cn);
-    }
-    /* UPDATE CODE */
-    if ($do == 'update') {
+
+        /* UPDATE CODE */
+    } elseif ($do == 'update') {
         @mysqli_query($cn, $sql);
         if ($debug == TRUE) {
             $response['error'] = @mysqli_error($cn);
@@ -142,9 +144,9 @@ if (!isset($apiKey) || ($apiKey != API_KEY)) {
         }
         //Get affected rows
         $response['affected_rows'] = @mysqli_affected_rows($cn);
-    }
-    /* DELETE CODE */
-    if ($do == 'delete') {
+
+        /* DELETE CODE */
+    } elseif ($do == 'delete') {
         @mysqli_query($cn, $sql);
         if ($debug == TRUE) {
             $response['error'] = @mysqli_error($cn);
@@ -153,6 +155,13 @@ if (!isset($apiKey) || ($apiKey != API_KEY)) {
             $response['errno'] = @mysqli_errno($cn);
         }
         $response['affected_rows'] = @mysqli_affected_rows($cn);
+    } else {
+        if ($debug == TRUE) {
+            $response['error'] = 'The sql can only be of select, add, update or delete type';
+            $response['errno'] = '1000000';
+        } else {
+            $response['errno'] = '1000000';
+        }
     }
 
     /* OUTPUT JSON */
