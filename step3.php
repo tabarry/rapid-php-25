@@ -36,11 +36,11 @@ set_time_limit(0);
                                     </tr>
                                     <?php
                                     $sql = "USE " . $_POST["db"];
-                                    mysqli_query($cn,$sql) or die(mysqli_error($cn));
+                                    mysqli_query($cn, $sql) or die(mysqli_error($cn));
 
 
                                     $sql = "SHOW FULL FIELDS FROM " . $_POST["table"][$i];
-                                    $rs = mysqli_query($cn,$sql) or die(mysqli_error($cn));
+                                    $rs = mysqli_query($cn, $sql) or die(mysqli_error($cn));
                                     $cnt = 0;
                                     while ($row = mysqli_fetch_array($rs)) {
                                         //
@@ -50,6 +50,7 @@ set_time_limit(0);
                                             $uniqueField = $row[0];
                                             $unique = makeFieldLabel($row[0]);
                                         }
+
                                         if ($row[4] == 'PRI') {
                                             $primary = $row[0];
                                         }
@@ -94,67 +95,76 @@ set_time_limit(0);
                                         if ($row[6] == "auto_increment") {
                                             $showChk = "checked='checked'";
                                         }
+                                        
                                         ?>
-                                    <?php if((!stristr($row[0],'__Last_Action_On'))&&(!stristr($row[0],'__Last_Action_By'))&&(!stristr($row[0],'__dbState'))){ ?>
-                                        <tr <?php echo $hide; ?>>
-                                            <td class="rowData" width="4%">&nbsp;<?php echo $cnt; ?>.</td>
-                                            <td class="rowData" width="24%">
-                                                <?php echo makeFieldLabel($row[0]); ?>
-                                                <input type="hidden" name="frmLabel[]" id="frmLabel" value="<?php echo makeFieldLabel($row[0]); ?>"/>
-                                                <input type="hidden" name="frmField[]" id="frmField" value="<?php echo $row[0]; ?>"/>
-                                            </td>
-                                            <td class="rowData" width="24%"><input type="checkbox" name="frmShow[]" id="frmShow" value="<?php echo $row[0]; ?>" <?php echo $disable_show_checkbox; ?> <?php echo $showChk; ?> />
-                                                <input name="frmOrderby" id="frmOrderby" type="radio" <?php echo $chkRadio; ?> value="<?php echo $row[0]; ?>" />
-                                                
-                                                <input name="frmSearchby" id="frmSearchby" type="radio" <?php echo $chkRadio; ?> value="<?php echo $row[0]; ?>" />
-                                                
-                                                <select name="frmType[]" id="frmType" class="select">
-                                                    <option>Select..</option>
-                                                    <option <?php makeFieldType($row[8], $row[0], $row[1], "Textbox"); ?>>Textbox</option>
-                                                    <option <?php makeFieldType($row[8], $row[0], $row[1], "Hidden"); ?>>Hidden</option>
-                                                    <option <?php makeFieldType($row[8], $row[0], $row[1], "Email"); ?>>Email</option>
-                                                    <option <?php makeFieldType($row[8], $row[0], $row[1], "Password"); ?>>Password</option>
-                                                    <option <?php makeFieldType($row[8], $row[0], $row[1], "Textarea"); ?>>Textarea</option>
-                                                    <option <?php makeFieldType($row[8], $row[0], $row[1], "HTML Area"); ?>>HTML Area</option>
-                                                    <option <?php makeFieldType($row[8], $row[0], $row[1], "Integer"); ?>>Integer</option>
-                                                    <option <?php makeFieldType($row[8], $row[0], $row[1], "Float"); ?>>Float</option>
-                                                    <option <?php makeFieldType($row[8], $row[0], $row[1], "Double"); ?>>Double</option>
-                                                    <option <?php makeFieldType($row[8], $row[0], $row[1], "Currency"); ?>>Currency</option>
-                                                    <option <?php makeFieldType($row[8], $row[0], $row[1], "Date"); ?>>Date</option>
-                                                    <option <?php makeFieldType($row[8], $row[0], $row[1], "Enum"); ?>>Enum</option>
-                                                    <option <?php makeFieldType($row[8], $row[0], $row[1], "Dropdown from DB"); ?>>Dropdown from DB</option>
-                                                    <option <?php makeFieldType($row[8], $row[0], $row[1], "Autocomplete"); ?>>Autocomplete</option>
-                                                    <option <?php makeFieldType($row[8], $row[0], $row[1], "Searchable Dropdown"); ?>>Searchable Dropdown</option>
-                                                    <option <?php makeFieldType($row[8], $row[0], $row[1], "File field"); ?>>File field</option>
-                                                    <option <?php makeFieldType($row[8], $row[0], $row[1], "Picture field"); ?>>Picture field</option>
-                                                    <option <?php makeFieldType($row[8], $row[0], $row[1], "Attachment field"); ?>>Attachment field</option>
+                                        <?php if ((!stristr($row[0], '__Last_Action_On')) && (!stristr($row[0], '__Last_Action_By')) && (!stristr($row[0], '__dbState'))) { ?>
+                                            <tr <?php echo $hide; ?>>
+                                                <td class="rowData" width="4%">&nbsp;<?php echo $cnt; ?>.</td>
+                                                <td class="rowData" width="24%">
+                                                    <?php echo makeFieldLabel($row[0]); ?>
+                                                    <input type="hidden" name="frmLabel[]" id="frmLabel" value="<?php echo makeFieldLabel($row[0]); ?>"/>
+                                                    <input type="hidden" name="frmField[]" id="frmField" value="<?php echo $row[0]; ?>"/>
+                                                </td>
+                                                <td class="rowData" width="24%"><input type="checkbox" name="frmShow[]" id="frmShow" value="<?php echo $row[0]; ?>" <?php echo $disable_show_checkbox; ?> <?php echo $showChk; ?> />
+                                                    <?php
+                                                    if ($row[0] == $uniqueField) {
+                                                        $checkOrder = " checked='checked' ";
+                                                    } else {
+                                                        $checkOrder = "";
+                                                    }
+                                                    ?>
+
+                                                    <input name="frmOrderby" id="frmOrderby" type="radio" <?php echo $checkOrder; ?> value="<?php echo $row[0]; ?>" />
+
+                                                    <input name="frmSearchby" id="frmSearchby" type="radio" <?php echo $chkRadio; ?> value="<?php echo $row[0]; ?>" />
+
+                                                    <select name="frmType[]" id="frmType" class="select">
+                                                        <option>Select..</option>
+                                                        <option <?php makeFieldType($row[8], $row[0], $row[1], "Textbox"); ?>>Textbox</option>
+                                                        <option <?php makeFieldType($row[8], $row[0], $row[1], "Hidden"); ?>>Hidden</option>
+                                                        <option <?php makeFieldType($row[8], $row[0], $row[1], "Email"); ?>>Email</option>
+                                                        <option <?php makeFieldType($row[8], $row[0], $row[1], "Password"); ?>>Password</option>
+                                                        <option <?php makeFieldType($row[8], $row[0], $row[1], "Textarea"); ?>>Textarea</option>
+                                                        <option <?php makeFieldType($row[8], $row[0], $row[1], "HTML Area"); ?>>HTML Area</option>
+                                                        <option <?php makeFieldType($row[8], $row[0], $row[1], "Integer"); ?>>Integer</option>
+                                                        <option <?php makeFieldType($row[8], $row[0], $row[1], "Float"); ?>>Float</option>
+                                                        <option <?php makeFieldType($row[8], $row[0], $row[1], "Double"); ?>>Double</option>
+                                                        <option <?php makeFieldType($row[8], $row[0], $row[1], "Currency"); ?>>Currency</option>
+                                                        <option <?php makeFieldType($row[8], $row[0], $row[1], "Date"); ?>>Date</option>
+                                                        <option <?php makeFieldType($row[8], $row[0], $row[1], "Enum"); ?>>Enum</option>
+                                                        <option <?php makeFieldType($row[8], $row[0], $row[1], "Dropdown from DB"); ?>>Dropdown from DB</option>
+                                                        <option <?php makeFieldType($row[8], $row[0], $row[1], "Autocomplete"); ?>>Autocomplete</option>
+                                                        <option <?php makeFieldType($row[8], $row[0], $row[1], "Searchable Dropdown"); ?>>Searchable Dropdown</option>
+                                                        <option <?php makeFieldType($row[8], $row[0], $row[1], "File field"); ?>>File field</option>
+                                                        <option <?php makeFieldType($row[8], $row[0], $row[1], "Picture field"); ?>>Picture field</option>
+                                                        <option <?php makeFieldType($row[8], $row[0], $row[1], "Attachment field"); ?>>Attachment field</option>
 
 
-                                                    <option <?php makeFieldType($row[8], $row[0], $row[1], "URL"); ?>>URL</option>
-                                                    <option <?php makeFieldType($row[8], $row[0], $row[1], "IP"); ?>>IP</option>
-                                                    <option <?php makeFieldType($row[8], $row[0], $row[1], "Credit Card"); ?>>Credit Card</option>
-                                                    <option <?php makeFieldType($row[8], $row[0], $row[1], "Skip"); ?>>Skip</option>
-                                                </select>
+                                                        <option <?php makeFieldType($row[8], $row[0], $row[1], "URL"); ?>>URL</option>
+                                                        <option <?php makeFieldType($row[8], $row[0], $row[1], "IP"); ?>>IP</option>
+                                                        <option <?php makeFieldType($row[8], $row[0], $row[1], "Credit Card"); ?>>Credit Card</option>
+                                                        <option <?php makeFieldType($row[8], $row[0], $row[1], "Skip"); ?>>Skip</option>
+                                                    </select>
 
-                                                <select name="frmResize[]" id="frmResize" class="selectOpen">
-                                                    <option value="Y">Y</option>
-                                                    <option value="N">N</option>
-                                                </select>
+                                                    <select name="frmResize[]" id="frmResize" class="selectOpen">
+                                                        <option value="Y">Y</option>
+                                                        <option value="N">N</option>
+                                                    </select>
 
-                                            </td>
-                                            <td class="rowData" width="24%"><input name="frmDefaultvalue[]" id="frmDefaultvalue" type="text" value="<?php echo $row[5]; ?>"/></td>
-                                            <td class="rowData" width="24%">
-                                                <select name="frmForeignkeytext[]" id="frmForeignkeytext" disabled1="true" class="select">
-                                                    <option>Option Text..</option>
-                                                    <?php echo tableDd($_POST["db"], $f_name); ?>
-                                                </select>
-                                                <select name="frmForeignkeyvalue[]" id="frmForeignkeyvalue" disabled1="true" class="select">
-                                                    <option>Option Value..</option>
-                                                    <?php echo tableDd($_POST["db"], $f_id); ?>
-                                                </select>
-                                            </td>
-                                        </tr>
-                                    <?php } ?>
+                                                </td>
+                                                <td class="rowData" width="24%"><input name="frmDefaultvalue[]" id="frmDefaultvalue" type="text" value="<?php echo $row[5]; ?>"/></td>
+                                                <td class="rowData" width="24%">
+                                                    <select name="frmForeignkeytext[]" id="frmForeignkeytext" disabled1="true" class="select">
+                                                        <option>Option Text..</option>
+                                                        <?php echo tableDd($_POST["db"], $f_name); ?>
+                                                    </select>
+                                                    <select name="frmForeignkeyvalue[]" id="frmForeignkeyvalue" disabled1="true" class="select">
+                                                        <option>Option Value..</option>
+                                                        <?php echo tableDd($_POST["db"], $f_id); ?>
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                        <?php } ?>
                                     <?php }mysqli_free_result($rs); ?>
                                 </table>
                                 <p>
