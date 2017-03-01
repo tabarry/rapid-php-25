@@ -115,8 +115,15 @@ set_time_limit(0);
                                                     ?>
 
                                                     <input name="frmOrderby" id="frmOrderby" type="radio" <?php echo $checkOrder; ?> value="<?php echo $row[0]; ?>" />
+                                                    <?php
+                                                    if ($row[0] == $uniqueField) {
+                                                        $checkSearch = " checked='checked' ";
+                                                    } else {
+                                                        $checkSearch = "";
+                                                    }
+                                                    ?>
 
-                                                    <input name="frmSearchby" id="frmSearchby" type="radio" <?php echo $chkRadio; ?> value="<?php echo $row[0]; ?>" />
+                                                    <input name="frmSearchby" id="frmSearchby" type="radio" <?php echo $checkSearch; ?> value="<?php echo $row[0]; ?>" />
 
                                                     <select name="frmType[]" id="frmType" class="select">
                                                         <option>Select..</option>
