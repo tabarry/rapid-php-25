@@ -186,7 +186,7 @@ if (!\$_GET['sr']) {
     \$sr = \$_GET['sr'];
 }
 if (!\$_GET['sort']) {
-    \$sort = \" ORDER BY " . $_POST['uniqueField'] . "\";
+    \$sort = \" ORDER BY " . $_POST['frmOrderby'] . "\";
 } else {
     \$sort = \" ORDER BY \" . \$_GET['f'] . \" \" . \$_GET['sort'];
 } 
