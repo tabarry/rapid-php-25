@@ -8,6 +8,7 @@ if (!function_exists('suQuery')) {
 
     //Send SQL to API
     function suQuery($sql) {
+        //Check if curl is enabled
         if(!function_exists('curl_init')){
             suExit(CURL_ERROR);
         }
