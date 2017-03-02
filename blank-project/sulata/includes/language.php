@@ -18,6 +18,7 @@ define('VALID_NUMBER', '%s must be a valid number.');
 define('VALID_FILE_FORMAT', 'Only %s allowed in %s.');
 define('MYSQL_ERROR', 'Sorry, there has been an error processing the form. Please try again.');
 define('GENERIC_ERROR', 'Sorry, there has been an error, you may try again.');
+define('CURL_ERROR', 'CURL is not enabled on this server, please contact the administrator.');
 
 define('DUPLICATION_ERROR', 'A record with the same %s already exists.');
 define('DUPLICATION_ERROR_ON_UPDATE', 'A record with the same %s has been created after your deletion, hence this record cannot be restored.');

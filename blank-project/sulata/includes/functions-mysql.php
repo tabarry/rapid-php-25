@@ -8,6 +8,9 @@ if (!function_exists('suQuery')) {
 
     //Send SQL to API
     function suQuery($sql) {
+        if(!function_exists('curl_init')){
+            suExit(CURL_ERROR);
+        }
         ///===
         $url = API_URL;
         $fields = array(
