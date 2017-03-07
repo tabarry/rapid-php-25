@@ -2,7 +2,6 @@
 
 include('../sulata/includes/config.php');
 include('../sulata/includes/functions.php');
-include('../sulata/includes/connection.php');
 include('../sulata/includes/get-settings.php');
 include('../sulata/includes/db-structure.php');
 checkLogin();
