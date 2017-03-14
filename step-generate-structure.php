@@ -31,6 +31,7 @@ while ($row = mysqli_fetch_array($rs)) {
             $req = "";
             $js_required = '';
             $html5_required = '';
+            $html5_type = 'text';
         }
 
 
@@ -44,6 +45,7 @@ while ($row = mysqli_fetch_array($rs)) {
                 $req = "";
                 $js_required = '';
                 $html5_required = '';
+                $html5_type = 'email';
             }
         }
 
@@ -59,6 +61,7 @@ while ($row = mysqli_fetch_array($rs)) {
                 $req = "";
                 $js_required = '';
                 $html5_required = '';
+                $html5_type = 'text';
             }
         }
 
