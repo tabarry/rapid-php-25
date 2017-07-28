@@ -513,7 +513,7 @@ if (!function_exists('suSlugify')) {
 /* Make file Name */
 if (!function_exists('suSlugifyName')) {
 
-    //File name and uniqid
+    //File name
     function suSlugifyName($suFileName) {
         $suFileName = preg_replace('/[^A-Za-z0-9-]+/', '-', $suFileName);
         return strtolower($suFileName);

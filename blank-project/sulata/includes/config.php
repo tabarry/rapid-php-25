@@ -48,14 +48,13 @@ if (!strstr($_SERVER['HTTP_HOST'], ".")) {
     define('ADMIN_URL', BASE_URL . '_admin/');
     define('ADMIN_SUBMIT_URL', ADMIN_URL);
     define('PING_URL', BASE_URL . 'sulata/ping.html');
-    define('API_URL', BASE_URL . 'phpMyRest/');
     define('NOSCRIPT_URL', BASE_URL . 'sulata/static/no-script.html');
     define('ACCESS_DENIED_URL', BASE_URL . 'sulata/static/access-denied.html');
     define('ADMIN_UPLOAD_PATH', '../files/');
     define('PUBLIC_UPLOAD_PATH', 'files/');
     define('LOCAL', FALSE);
     //API Settings
-    define('API_URL', BASE_URL . BASE_URL . 'phpMyRest');
+    define('API_URL', BASE_URL . 'phpMyRest/');
     define('API_KEY', '#API_KEY#');
     define('API_DEBUG', FALSE);
     //MySQL Settings

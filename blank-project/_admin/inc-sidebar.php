@@ -40,7 +40,7 @@
                                 $dir = scandir($dir);
                                 //$sidebarExclude comes from config.php
                                 foreach ($dir as $file) {
-                                    if ((!in_array($file, $exclude)) && ($file[0] != '.')) {
+                                    if ((!in_array($file, $sidebarExclude)) && ($file[0] != '.')) {
                                         if ((!stristr($file, '-add')) && (!stristr($file, '-remote')) && (!stristr($file, '-update')) && (!stristr($file, 'inc-')) && (!stristr($file, '-cards'))) {
                                             $fileNameActual = str_replace('.php', '', $file);
                                             $fileName = str_replace('-', ' ', $fileNameActual);
