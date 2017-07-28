@@ -103,7 +103,9 @@ $addCodeEnd = "
 include('inc-checkbox.php');
 $addCode = $addCodeStart . $addCode . $addCodeEnd;
 $switchView = "<div class=\"pull-right\">
+    <?php if(\$getSettings['card_view']==1){ ?>
                                     <a href=\"<?php echo ADMIN_URL; ?>" . $_POST['frmFormsetvalue'] . "-cards<?php echo PHP_EXTENSION;?>/\"><i class=\"fa fa-th-large\"></i></a>
+<?php } ?>                                         
                                     <a href=\"<?php echo ADMIN_URL; ?>" . $_POST['frmFormsetvalue'] . "<?php echo PHP_EXTENSION;?>/\"><i class=\"fa fa-table\"></i></a>
                                 </div>";
 //Write add code

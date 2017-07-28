@@ -231,8 +231,11 @@ if (suSegment(1) == 'stream-pdf' && \$downloadAccessPDF == TRUE) {
 }
 ";
 $switchToCardView = "<div class=\"pull-right\">
+    <?php if(\$getSettings['card_view']==1){ ?>
                                     <a href=\"<?php echo ADMIN_URL; ?>" . $_POST['frmFormsetvalue'] . "-cards<?php echo PHP_EXTENSION;?>/\"><i class=\"fa fa-th-large\"></i></a>
-                                </div>";
+                                </div>
+<?php } ?>                                
+";
 //Write view code
 $viewCode = str_replace('[RAPID-CODE]', $viewCode, $template);
 $viewCode = str_replace("/* rapidSql */", $pageTitle . "\n" . $csvDownloadCode, $viewCode);

@@ -96,7 +96,9 @@ if (suSegment(1) == 'stream-pdf' && $downloadAccessPDF == TRUE) {
                                 <!-- Heading -->
                                 <h3 class="pull-left"><i class="fa fa-table red"></i> <?php echo $pageTitle; ?></h3>
                                 <div class="pull-right">
+                                    <?php if($getSettings['card_view']==1){ ?>
                                     <a href="<?php echo ADMIN_URL; ?>media-categories-cards<?php echo PHP_EXTENSION; ?>/"><i class="fa fa-th-large"></i></a>
+                                    <?php } ?>
                                 </div>
                                 <div class="clearfix"></div>
                             </div>
