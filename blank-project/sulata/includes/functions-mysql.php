@@ -9,7 +9,7 @@ if (!function_exists('suQuery')) {
     //Send SQL to API
     function suQuery($sql) {
         //Check if curl is enabled
-        if(!function_exists('curl_init')){
+        if (!function_exists('curl_init')) {
             suExit(CURL_ERROR);
         }
         ///===
@@ -55,7 +55,11 @@ if (!function_exists('suPaginate')) {
     function suPaginate($sqlP, $cssClass = 'paginate') {
         //global $getSettings['page_size'];
         global $getSettings, $sr;
-        $phpSelf = str_replace('.php', '/', $_SERVER['PHP_SELF']);
+        if (PHP_EXTENSION == '') {
+            $phpSelf = str_replace('.php', '/', $_SERVER['PHP_SELF']);
+        } else {
+            $phpSelf = str_replace('.php', PHP_EXTENSION , $_SERVER['PHP_SELF']);
+        }
 
         $resultP = suQuery($sqlP);
         $rowP = $resultP['result'][0];
@@ -105,7 +109,12 @@ if (!function_exists('makeFieldLabel')) {
 if (!function_exists('suSort')) {
 
     function suSort($fieldsArray, $cssClass = 'paginate') {
-        $phpSelf = str_replace('.php', '/', $_SERVER['PHP_SELF']);
+        if (PHP_EXTENSION == '') {
+            $phpSelf = str_replace('.php', '/', $_SERVER['PHP_SELF']);
+        } else {
+          $phpSelf = str_replace('.php', PHP_EXTENSION , $_SERVER['PHP_SELF']);
+        }
+                
         $opt = "<option value='" . $phpSelf . "'>Sort by..</option>";
         for ($i = 0; $i <= sizeof($fieldsArray) - 1; $i++) {
             if ($_GET['f'] == $fieldsArray[$i] && $_GET['sort'] == 'asc') {
