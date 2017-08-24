@@ -998,18 +998,19 @@ if (!function_exists('suMakeUploadPath')) {
         $m = date('m');
         $y = date('Y');
         if (!file_exists($basePath . $y)) {
-            mkdir($basePath . $y);
+            mkdir($basePath . $y, 0777);
         }
         if (!file_exists($basePath . $y . '/' . $m)) {
-            mkdir($basePath . $y . '/' . $m);
+            mkdir($basePath . $y . '/' . $m, 0777);
         }
         if (!file_exists($basePath . $y . '/' . $m . '/' . $d)) {
-            mkdir($basePath . $y . '/' . $m . '/' . $d);
+            mkdir($basePath . $y . '/' . $m . '/' . $d, 0777);
         }
         return $uploadPath = $y . '/' . $m . '/' . $d . '/';
     }
 
 }
+
 
 //Generate password
 if (!function_exists('suGeneratePassword')) {
