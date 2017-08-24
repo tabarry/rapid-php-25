@@ -79,8 +79,8 @@ $pageTitle = 'Modules';
                             <!-- Heading -->
                             <div class="single-head">
                                 <!-- Heading -->
-                                <?php if($getSettings['card_view']==1){ ?>
-                                <h3 class="pull-left"><i class="fa fa-th-large purple"></i> <?php echo $pageTitle; ?></h3>
+                                <?php if ($getSettings['card_view'] == 1) { ?>
+                                    <h3 class="pull-left"><i class="fa fa-th-large purple"></i> <?php echo $pageTitle; ?></h3>
                                 <?php } ?>
 
                                 <div class="clearfix"></div>

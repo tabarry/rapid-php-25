@@ -83,8 +83,8 @@ checkLogin();
                                 <!-- Heading -->
                                 <h3 class="pull-left"><i class="fa fa-desktop purple"></i> <?php echo $pageTitle; ?></h3>
                                 <div class="pull-right">
-                                    <?php if($getSettings['card_view']==1){ ?>
-                                    <a href="<?php echo ADMIN_URL; ?>users-cards<?php echo PHP_EXTENSION; ?>/"><i class="fa fa-th-large"></i></a>
+                                    <?php if ($getSettings['card_view'] == 1) { ?>
+                                        <a href="<?php echo ADMIN_URL; ?>users-cards<?php echo PHP_EXTENSION; ?>/"><i class="fa fa-th-large"></i></a>
                                     <?php } ?>
                                     <a href="<?php echo ADMIN_URL; ?>users<?php echo PHP_EXTENSION; ?>/"><i class="fa fa-table"></i></a>
                                 </div>

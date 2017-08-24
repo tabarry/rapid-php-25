@@ -810,7 +810,15 @@ if (!function_exists('suMail')) {
             $mail->AltBody = "To view the message, please use an HTML compatible email viewer!";
             $mail->MsgHTML($body);
             if ($attachment == TRUE) {
-                $mail->AddAttachment($attachment);      // attachment
+                if (is_array($attachment)) {
+                    for ($i = 0; $i <= sizeof($attachment); $i++) {
+                        if ($attachment[$i] != '') {
+                            $mail->AddAttachment($attachment[$i]);      // attachment
+                        }
+                    }
+                } else {
+                    $mail->AddAttachment($attachment);      // attachment
+                }
             }
             if (!$mail->Send()) {
                 echo "Mailer Error: " . $mail->ErrorInfo;
