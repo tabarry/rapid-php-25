@@ -5,7 +5,7 @@ error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);
 //ini_set('display_errors',1);
 define('VERSION', '25');
 $version = "Rapid PHP " . VERSION; //If this is changed, please also change config.php in sulata/includes folder
-$debug = FALSE;
+$debug = TRUE;
 $sitePath = '../' . $_POST['folder'] . '/sulata/';
 $appPath = '../' . $_POST['folder'] . '/';
 $backupPath = '../' . $_POST['folder'] . '/backup/';

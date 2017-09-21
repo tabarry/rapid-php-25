@@ -92,7 +92,7 @@ if (!isset($apiKey) || ($apiKey != API_KEY)) {
         $response['connect_errno'] = mysqli_connect_errno();
     }
     @mysqli_query($cn, "SET NAMES utf8");
-    @mysqli_select_db($cn, DB_NAME);
+    @mysqli_query($cn, "SET SESSION sql_mode = 'TRADITIONAL'");
 
     /* SELECT CODE */
     if ($do == 'select') {
