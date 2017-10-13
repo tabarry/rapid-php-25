@@ -52,7 +52,7 @@ if ($do == "add") {
     $sql = "INSERT INTO sulata_users SET user__Name='" . suStrip($_POST['user__Name']) . "',user__Phone='" . suStrip($_POST['user__Phone']) . "',user__Email='" . suStrip($_POST['user__Email']) . "',user__Password='" . suCrypt(suStrip($_POST['user__Password'])) . "',user__Status='" . suStrip($_POST['user__Status']) . "'
 ,user__Last_Action_On ='" . date('Y-m-d H:i:s') . "',user__Last_Action_By='" . $_SESSION[SESSION_PREFIX . 'user__Name'] . "'        
 " . $extraSql;
-    suQuery($sql);
+    $result = suQuery($sql);
 
     if ($result['errno'] > 0) {
         if ($result['errno'] == 1062) {
@@ -162,7 +162,7 @@ if ($do == "update") {
 
 
 
-    suQuery($sql);
+    $result = suQuery($sql);
 
     if ($result['errno'] > 0) {
         if ($result['errno'] == 1062) {
@@ -195,9 +195,10 @@ if ($do == "update") {
         /* POST UPDATE PLACE */
 
         //Set sessions
-        $_SESSION[SESSION_PREFIX . 'user__Name'] = $_POST['user__Name'];
-        $_SESSION[SESSION_PREFIX . 'user__Email'] = $_POST['user__Email'];
-
+        if ($_SESSION[SESSION_PREFIX . 'user_id'] == $_POST['user_id']) {
+            $_SESSION[SESSION_PREFIX . 'user__Name'] = $_POST['user__Name'];
+            $_SESSION[SESSION_PREFIX . 'user__Email'] = $_POST['user__Email'];
+        }
 
         if ($_POST['referrer'] == '') {
             $_POST['referrer'] = ADMIN_URL . 'users-cards' . PHP_EXTENSION . '/';

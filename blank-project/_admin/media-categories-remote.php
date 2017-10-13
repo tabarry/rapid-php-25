@@ -60,7 +60,7 @@ if ($do == "add") {
     $sql = "INSERT INTO sulata_media_categories SET mediacat__Name='" . suStrip($_POST['mediacat__Name']) . "',mediacat__Description='" . suStrip($_POST['mediacat__Description']) . "',mediacat__Type='" . suStrip($_POST['mediacat__Type']) . "',mediacat__Thumbnail_Width='" . suStrip($_POST['mediacat__Thumbnail_Width']) . "',mediacat__Thumbnail_Height='" . suStrip($_POST['mediacat__Thumbnail_Height']) . "',mediacat__Image_Width='" . suStrip($_POST['mediacat__Image_Width']) . "',mediacat__Image_Height='" . suStrip($_POST['mediacat__Image_Height']) . "',mediacat__Sequence='" . suStrip($_POST['mediacat__Sequence']) . "'
 ,mediacat__Last_Action_On ='" . date('Y-m-d H:i:s') . "',mediacat__Last_Action_By='" . $_SESSION[SESSION_PREFIX . 'user__Name'] . "'        
 " . $extraSql;
-    suQuery($sql);
+    $result = suQuery($sql);
 
     if ($result['errno'] > 0) {
         if ($result['errno'] == 1062) {
@@ -151,7 +151,7 @@ if ($do == "update") {
     $sql = "UPDATE sulata_media_categories SET mediacat__Name='" . suStrip($_POST['mediacat__Name']) . "',mediacat__Description='" . suStrip($_POST['mediacat__Description']) . "',mediacat__Type='" . suStrip($_POST['mediacat__Type']) . "',mediacat__Thumbnail_Width='" . suStrip($_POST['mediacat__Thumbnail_Width']) . "',mediacat__Thumbnail_Height='" . suStrip($_POST['mediacat__Thumbnail_Height']) . "',mediacat__Image_Width='" . suStrip($_POST['mediacat__Image_Width']) . "',mediacat__Image_Height='" . suStrip($_POST['mediacat__Image_Height']) . "',mediacat__Sequence='" . suStrip($_POST['mediacat__Sequence']) . "'
 ,mediacat__Last_Action_On ='" . date('Y-m-d H:i:s') . "',mediacat__Last_Action_By='" . $_SESSION[SESSION_PREFIX . 'user__Name'] . "'        
 " . $extraSql . " WHERE mediacat__ID='" . $_POST['mediacat__ID'] . "'";
-    suQuery($sql);
+    $result = suQuery($sql);
 
     if ($result['errno'] > 0) {
         if ($result['errno'] == 1062) {

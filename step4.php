@@ -1,7 +1,7 @@
 <?php
 
-include('includes/include.php');
 
+include('includes/include.php');
 set_time_limit(0);
 if (!is_dir($sitePath)) {
     mkdir($sitePath)

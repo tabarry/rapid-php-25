@@ -241,7 +241,7 @@ set_time_limit(0);
                                     <!--db structure form-->
                                     <form name="dbs" id="dbs" method="post" action="step-generate-structure.php" target="remote_dbs">
                                         <input type="hidden" name="db" value="<?php echo $_POST['db']; ?>"/>
-                                        <input type="hidden" name="folder" id="folder" value=""/>
+                                        <input type="hidden1" name="folder" id="folder" value=""/>
                                     </form>
                                     <?php suIframe('remote_dbs'); ?> 
 

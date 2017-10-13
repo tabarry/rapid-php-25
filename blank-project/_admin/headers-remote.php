@@ -46,7 +46,7 @@ if ($do == "add") {
     $sql = "INSERT INTO sulata_headers SET header__Title='" . suStrip($_POST['header__Title']) . "'
 ,header__Last_Action_On ='" . date('Y-m-d H:i:s') . "',header__Last_Action_By='" . $_SESSION[SESSION_PREFIX . 'user__Name'] . "'	        
 " . $extraSql;
-    suQuery($sql);
+    $result = suQuery($sql);
 
     if ($result['errno'] > 0) {
         if ($result['errno'] == 1062) {
@@ -127,7 +127,7 @@ if ($do == "update") {
     $sql = "UPDATE sulata_headers SET header__Title='" . suStrip($_POST['header__Title']) . "'
 ,header__Last_Action_On ='" . date('Y-m-d H:i:s') . "',header__Last_Action_By='" . $_SESSION[SESSION_PREFIX . 'user__Name'] . "'        
 " . $extraSql . " WHERE header__ID='" . $_POST['header__ID'] . "'";
-    suQuery($sql);
+    $result = suQuery($sql);
 
     if ($result['errno'] > 0) {
         if ($result['errno'] == 1062) {

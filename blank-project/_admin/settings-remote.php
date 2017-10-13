@@ -39,7 +39,7 @@ if ($do == "add") {
     $sql = "INSERT INTO sulata_settings SET setting__Setting='" . suStrip($_POST['setting__Setting']) . "',setting__Key='" . suStrip($_POST['setting__Key']) . "',setting__Value='" . suStrip($_POST['setting__Value']) . "',setting__Type='" . suStrip($_POST['setting__Type']) . "'
 ,setting__Last_Action_On ='" . date('Y-m-d H:i:s') . "',setting__Last_Action_By='" . $_SESSION[SESSION_PREFIX . 'user__Name'] . "'        
 " . $extraSql;
-    suQuery($sql);
+    $result = suQuery($sql);
 
     if ($result['errno'] > 0) {
         if ($result['errno'] == 1062) {
@@ -106,7 +106,7 @@ if ($do == "update") {
     $sql = "UPDATE sulata_settings SET setting__Setting='" . suStrip($_POST['setting__Setting']) . "',setting__Key='" . suStrip($_POST['setting__Key']) . "',setting__Value='" . suStrip($_POST['setting__Value']) . "',setting__Type='" . suStrip($_POST['setting__Type']) . "'
 ,setting__Last_Action_On ='" . date('Y-m-d H:i:s') . "',setting__Last_Action_By='" . $_SESSION[SESSION_PREFIX . 'user__Name'] . "'        
 " . $extraSql . " WHERE setting__ID='" . $_POST['setting__ID'] . "'";
-    suQuery($sql);
+    $result = suQuery($sql);
 
     if ($result['errno'] > 0) {
         if ($result['errno'] == 1062) {
